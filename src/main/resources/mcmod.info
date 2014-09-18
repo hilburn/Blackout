@@ -1,0 +1,16 @@
+[
+{
+  "modid": "BlackoutCore",
+  "name": "BlackoutCore",
+  "description": "Minecraft tweaks for the Blackout Modpack",
+  "version": "${version}",
+  "mcversion": "${mcversion}",
+  "url": "",
+  "updateUrl": "",
+  "authorList": ["hilburn"],
+  "credits": "",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": []
+}
+]
