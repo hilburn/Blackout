@@ -1,8 +1,16 @@
 package com.hilburn.blackout.handlers;
 
+import net.minecraft.block.BlockContainer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.event.entity.player.EntityInteractEvent;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent.Action;
+
+import com.hilburn.blackout.blocks.ModBlocks;
+
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
 public class PlayerHandler {

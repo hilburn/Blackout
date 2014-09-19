@@ -1,7 +1,6 @@
 package com.hilburn.blackout.blocks;
 
 import net.minecraft.block.Block;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemBlock;
 
 import com.hilburn.blackout.tileentity.TileEntitySmallChest;
@@ -32,7 +31,6 @@ public class ModBlocks {
 			GameRegistry.addSubstitutionAlias("minecraft:chest", GameRegistry.Type.ITEM, new ItemBlock(smallchest));
 			GameRegistry.addSubstitutionAlias("minecraft:ice", GameRegistry.Type.BLOCK, ice);
 			GameRegistry.addSubstitutionAlias("minecraft:ice", GameRegistry.Type.ITEM, new ItemBlock(ice));
-			//GameRegistry.addSubstitutionAlias("minecraft:snow", GameRegistry.Type.BLOCK, Blocks.air);
 		} catch (ExistingSubstitutionException e) {
 			System.out.println("summat went wrong");
 			e.printStackTrace();

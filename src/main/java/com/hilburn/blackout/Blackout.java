@@ -2,6 +2,7 @@ package com.hilburn.blackout;
 
 import java.util.Random;
 
+import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.MinecraftForge;
 
@@ -10,6 +11,7 @@ import com.hilburn.blackout.handlers.BlockHandler;
 import com.hilburn.blackout.handlers.PlayerHandler;
 import com.hilburn.blackout.proxies.CommonProxy;
 import com.hilburn.blackout.world.WorldProviderBlackout;
+import com.hilburn.blackout.world.BiomeGenAsteroidOcean;
 
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
