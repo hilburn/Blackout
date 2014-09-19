@@ -49,7 +49,6 @@ public class Blackout {
 		
 		MinecraftForge.EVENT_BUS.register(blockEvent);
 		MinecraftForge.EVENT_BUS.register(playerEvent);
-		//BiomeGenBase defaultBiome = WorldChunkManager.allowedBiomes.get(0);
 		
 		DimensionManager.unregisterProviderType(0);
         DimensionManager.registerProviderType(0, WorldProviderBlackout.class, true);
@@ -57,31 +56,13 @@ public class Blackout {
 	
 	@EventHandler
 	public void init(FMLInitializationEvent event){
-//		ModItems.registerRecipes();
-//		ModBlocks.registerRecipes();
-//		
-//		ModBlocks.registerTileEntities();
-//		
-//		new GuiHandler();
-		
+
 	}
 	
 	@EventHandler
 	public void postInit(FMLPostInitializationEvent event){
 		ModBlocks.replaceBlocks();
 	}
-	
-	
-//	@EventHandler
-//	public void blockBreak(BreakEvent event){
-//		System.out.print("harvest block");
-//		if (event.block==Blocks.ice){
-//			ArrayList<ItemStack> items = new ArrayList<ItemStack>();
-//            items.add(new ItemStack(Blocks.ice));
-//            event.world.setBlockToAir(event.x, event.y, event.z);
-//            //event.block.dropBlockAsItem(event.world, event.x, event.y, event.z,new ItemStack(Blocks.ice);
-//		}
-//	}
 	
 }
 

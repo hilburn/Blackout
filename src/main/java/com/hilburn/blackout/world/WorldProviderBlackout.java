@@ -29,10 +29,10 @@ public class WorldProviderBlackout extends WorldProvider {
 		}
 		this.worldChunkMgr = manager;               
 		this.dimensionId = 0;
-		this.hasNoSky=true;
+		//this.hasNoSky=true;
 		worldObj.skylightSubtracted=10;
 		setCloudRenderer(new CloudRenderer());
-		//setSkyRenderer(new SkyRenderer());
+		setSkyRenderer(new SkyRenderer());
 	}
 	
 	public IChunkProvider createChunkGenerator()        {               
@@ -124,7 +124,7 @@ public class WorldProviderBlackout extends WorldProvider {
      */
     public float calculateCelestialAngle(long p_76563_1_, float p_76563_3_)
     {
-        return 0.64F;
+    	return 0.84F;//0.805872F;
     }
 	
 	@SideOnly(Side.CLIENT)

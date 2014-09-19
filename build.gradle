@@ -19,18 +19,18 @@ apply plugin: 'forge'
 
 version = "0.3.2"
 group= "com.hilburn.blackout" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
-archivesBaseName = "Blackout"
+archivesBaseName = "blackout"
 
 minecraft {
     version = "1.7.10-10.13.1.1216-new"
     runDir = "eclipse"
 }
 
-jar {
-        manifest {
-        attributes 'FMLAT': 'blackout_at.cfg'
-    }
-}
+//jar {
+//        manifest {
+//        attributes 'FMLAT': 'blackout_at.cfg'
+//    }
+//}
 
 dependencies {
     // you may put jars on which you depend on in ./libs
