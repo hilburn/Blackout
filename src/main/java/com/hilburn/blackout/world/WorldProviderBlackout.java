@@ -1,7 +1,6 @@
 package com.hilburn.blackout.world;
 
 import net.minecraft.entity.Entity;
-import net.minecraft.util.MathHelper;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.WorldProvider;
 import net.minecraft.world.biome.BiomeGenBase;
@@ -12,6 +11,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class WorldProviderBlackout extends WorldProvider {
 
+	@SuppressWarnings("unused")
 	public void registerWorldChunkManager(){
 		WorldChunkManager manager = new WorldChunkManager(worldObj);
 		WorldChunkManager.allowedBiomes.clear();
@@ -29,9 +29,10 @@ public class WorldProviderBlackout extends WorldProvider {
 		}
 		this.worldChunkMgr = manager;               
 		this.dimensionId = 0;
-		this.isHellWorld=true;
-		worldObj.skylightSubtracted=9;
+		this.hasNoSky=true;
+		worldObj.skylightSubtracted=10;
 		setCloudRenderer(new CloudRenderer());
+		//setSkyRenderer(new SkyRenderer());
 	}
 	
 	public IChunkProvider createChunkGenerator()        {               
@@ -52,6 +53,11 @@ public class WorldProviderBlackout extends WorldProvider {
             this.lightBrightnessTable[i] = (1.0F - f1) / (f1 * 3.0F + 1.0F) * (1.0F - f) + f;
         }
     }
+	@Override
+	 public int getMoonPhase(long p_76559_1_)
+	 {
+		return 4;
+	 }
 	
 	/**
      * Return Vec3D with biome specific fog color
@@ -110,13 +116,15 @@ public class WorldProviderBlackout extends WorldProvider {
 	@Override
 	public float getSunBrightnessFactor(float par1)
     {
-        return 9F/16.0F;
+        return 10F/16.0F;
     }
 	
-	@Override
-	public long getWorldTime()
+	/**
+     * Calculates the angle of sun and moon in the sky relative to a specified time (usually worldTime)
+     */
+    public float calculateCelestialAngle(long p_76563_1_, float p_76563_3_)
     {
-        return 500;
+        return 0.64F;
     }
 	
 	@SideOnly(Side.CLIENT)
@@ -133,5 +141,6 @@ public class WorldProviderBlackout extends WorldProvider {
     {
         return 0.5F;
     }
+    
 
 }
