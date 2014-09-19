@@ -1,6 +1,7 @@
 package com.hilburn.blackout.blocks;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -44,4 +45,9 @@ public class BlockIceUnmelting extends Block {
         }
         
     }
+	
+	@Override
+	public void updateTick(World world, int x, int y, int z, Random rand)
+	{
+	}
 }
