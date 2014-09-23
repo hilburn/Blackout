@@ -4,6 +4,10 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.event.world.BlockEvent.BreakEvent;
+import net.minecraftforge.event.world.BlockEvent.HarvestDropsEvent;
+
+import com.hilburn.blackout.blocks.ModBlocks;
+
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
 public class BlockHandler {
@@ -21,6 +25,17 @@ public class BlockHandler {
 	            iceDrop.delayBeforeCanPickup = 10;
 	            event.world.spawnEntityInWorld(iceDrop);
             }
+		}
+	}
+	
+	@SubscribeEvent
+	public void blockHavest(HarvestDropsEvent event){
+		if (event.block==ModBlocks.smallchest){
+			event.drops.clear();//.remove(new ItemStack(ModBlocks.smallchest));
+			event.drops.add(new ItemStack(Blocks.chest));
+		}else if(event.block==ModBlocks.smallchest){
+			event.drops.clear();//remove(new ItemStack(ModBlocks.smallchesttrap));
+			event.drops.add(new ItemStack(Blocks.trapped_chest));
 		}
 	}
 }

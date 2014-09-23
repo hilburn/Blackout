@@ -1,7 +1,7 @@
 [
 {
-  "modid": "BlackoutCore",
-  "name": "BlackoutCore",
+  "modid": "Blackout",
+  "name": "Blackout",
   "description": "Minecraft tweaks for the Blackout Modpack",
   "version": "${version}",
   "mcversion": "${mcversion}",

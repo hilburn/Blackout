@@ -15,7 +15,7 @@ public class BiomeGenAsteroid extends BiomeGenBase{
         this.spawnableWaterCreatureList.clear();
         this.spawnableCaveCreatureList.clear();
         
-        this.setTemperatureRainfall(0F, 0F);
+        this.setTemperatureRainfall(0.25F, 0F);
         this.setDisableRain();
         this.enableSnow=false;
         this.theBiomeDecorator.treesPerChunk=0;

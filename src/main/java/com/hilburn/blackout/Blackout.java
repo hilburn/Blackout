@@ -46,6 +46,7 @@ public class Blackout {
 		proxy.initRenderers();
 		
 		ModBlocks.init();
+		ModBlocks.replaceBlocks();
 		
 		MinecraftForge.EVENT_BUS.register(blockEvent);
 		MinecraftForge.EVENT_BUS.register(playerEvent);
@@ -61,7 +62,7 @@ public class Blackout {
 	
 	@EventHandler
 	public void postInit(FMLPostInitializationEvent event){
-		ModBlocks.replaceBlocks();
+		
 	}
 	
 }
