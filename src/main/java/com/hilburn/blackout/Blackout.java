@@ -1,7 +1,5 @@
 package com.hilburn.blackout;
 
-import java.util.Random;
-
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.MinecraftForge;
 
@@ -24,8 +22,6 @@ public class Blackout {
 	
 	BlockHandler blockEvent = new BlockHandler();
 	PlayerHandler playerEvent = new PlayerHandler();
-	//BiomeGenBase asteroidocean = new BiomeGenAsteroidOcean(1);
-	public static Random generator = new Random(System.currentTimeMillis());
 	
 	@Instance(ModInformation.MODID)
 	public static Blackout instance;
@@ -35,18 +31,8 @@ public class Blackout {
 	
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event){
-//		ConfigHandler.init(event.getSuggestedConfigurationFile());
-//		
-//		Tabs.init();
-//		ModItems.init();
-		//System.out.println("try to do blocks");
-		
-//		
-		proxy.initSounds();
-		proxy.initRenderers();
 		
 		ModBlocks.init();
-		ModBlocks.replaceBlocks();
 		
 		MinecraftForge.EVENT_BUS.register(blockEvent);
 		MinecraftForge.EVENT_BUS.register(playerEvent);

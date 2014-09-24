@@ -33,29 +33,21 @@ public class SkyRenderer extends IRenderHandler
 	@Override
 	public void render(float partialTicks, WorldClient world, Minecraft mc)
 	{
-		//System.out.println("Start Sky Render");
 
 		GL11.glDisable(GL11.GL_TEXTURE_2D);
 		Vec3 vec3 = world.getSkyColor(mc.renderViewEntity, partialTicks);
 		float f1 = (float)vec3.xCoord;
 		float f2 = (float)vec3.yCoord;
 		float f3 = (float)vec3.zCoord;
-		float f6;
-		//System.out.println("  - color of " + f1 + "/" + f2 + "/" + f3);
-
 		if (mc.gameSettings.anaglyph)
 		{
-			float f4 = (f1 * 30.0F + f2 * 59.0F + f3 * 11.0F) / 100.0F;
-			float f5 = (f1 * 30.0F + f2 * 70.0F) / 100.0F;
-			f6 = (f1 * 30.0F + f3 * 70.0F) / 100.0F;
-
 			f1 = 0;
 			f2 = 0;
 			f3 = 0;
 		}
 
 		GL11.glColor3f(f1, f2, f3);
-		Tessellator tessellator1 = Tessellator.instance;
+		Tessellator tessellator = Tessellator.instance;
 		GL11.glDepthMask(false);
 		GL11.glEnable(GL11.GL_FOG);
 		GL11.glColor3f(f1, f2, f3);
@@ -65,35 +57,33 @@ public class SkyRenderer extends IRenderHandler
 		GL11.glEnable(GL11.GL_BLEND);
 		OpenGlHelper.glBlendFunc(770, 771, 1, 0);
 		RenderHelper.disableStandardItemLighting();
+		float f4;
+		float f5;
+		float f6;
 		float f7;
-		float f8;
-		float f9;
-		float f10;
 
 		GL11.glEnable(GL11.GL_TEXTURE_2D);
 		OpenGlHelper.glBlendFunc(770, 1, 1, 0);
 		GL11.glPushMatrix();
-		f6 = 1.0F - world.getRainStrength(partialTicks);
-		f7 = 0.0F;
-		f8 = 0.0F;
-		f9 = 0.0F;
-		GL11.glColor4f(1.0F, 1.0F, 1.0F, f6);
-		GL11.glTranslatef(f7, f8, f9);
+		f4 = 0.0F;
+		f5 = 0.0F;
+		f6 = 0.0F;
+		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+		GL11.glTranslatef(f4, f5, f6);
 		GL11.glRotatef(-90.0F, 0.0F, 1.0F, 0.0F);
 		GL11.glRotatef(world.getCelestialAngle(partialTicks) * 360.0F, 1.0F, 0.0F, 0.0F);
-		f10 = 30.0F;
 
 	    GL11.glRotatef(-90.0F, 0.0F, 1.0F, 0.0F);
 	    GL11.glColor4f(1.0F, 1.0F, 1.0F, 5F);
 	    GL11.glRotatef(world.getCelestialAngle(partialTicks) * 360.0F, 1.0F, 0.0F, 0.0F);
-	    double var12 = 30.0F;
+	    double var8 = 30.0F;
 	    FMLClientHandler.instance().getClient().renderEngine.bindTexture(SkyRenderer.sunTexture);
-	    tessellator1.startDrawingQuads();
-	    tessellator1.addVertexWithUV(-var12, 150.0D, -var12, 0.0D, 0.0D);
-	    tessellator1.addVertexWithUV(var12, 150.0D, -var12, 1.0D, 0.0D);
-	    tessellator1.addVertexWithUV(var12, 150.0D, var12, 1.0D, 1.0D);
-	    tessellator1.addVertexWithUV(-var12, 150.0D, var12, 0.0D, 1.0D);
-	    tessellator1.draw();
+	    tessellator.startDrawingQuads();
+	    tessellator.addVertexWithUV(-var8, 150.0D, -var8, 0.0D, 0.0D);
+	    tessellator.addVertexWithUV(var8, 150.0D, -var8, 1.0D, 0.0D);
+	    tessellator.addVertexWithUV(var8, 150.0D, var8, 1.0D, 1.0D);
+	    tessellator.addVertexWithUV(-var8, 150.0D, var8, 0.0D, 1.0D);
+	    tessellator.draw();
 
         GL11.glPopMatrix();
 
@@ -102,7 +92,7 @@ public class SkyRenderer extends IRenderHandler
         GL11.glDisable(GL11.GL_BLEND);
 
         GL11.glDisable(GL11.GL_TEXTURE_2D);
-        float f18 = world.getStarBrightness(partialTicks) * f6;
+        float f18 = world.getStarBrightness(partialTicks);
 
         if (f18 > 0.0F)
         {
@@ -125,32 +115,32 @@ public class SkyRenderer extends IRenderHandler
             GL11.glTranslatef(0.0F, 12.0F, 0.0F);
             GL11.glCallList(this.glSkyList2);
             GL11.glPopMatrix();
-            f8 = 1.0F;
-            f9 = -((float)(d0 + 65.0D));
-            f10 = -f8;
-            tessellator1.startDrawingQuads();
-            tessellator1.setColorRGBA_I(0, 255);
-            tessellator1.addVertex((double)(-f8), (double)f9, (double)f8);
-            tessellator1.addVertex((double)f8, (double)f9, (double)f8);
-            tessellator1.addVertex((double)f8, (double)f10, (double)f8);
-            tessellator1.addVertex((double)(-f8), (double)f10, (double)f8);
-            tessellator1.addVertex((double)(-f8), (double)f10, (double)(-f8));
-            tessellator1.addVertex((double)f8, (double)f10, (double)(-f8));
-            tessellator1.addVertex((double)f8, (double)f9, (double)(-f8));
-            tessellator1.addVertex((double)(-f8), (double)f9, (double)(-f8));
-            tessellator1.addVertex((double)f8, (double)f10, (double)(-f8));
-            tessellator1.addVertex((double)f8, (double)f10, (double)f8);
-            tessellator1.addVertex((double)f8, (double)f9, (double)f8);
-            tessellator1.addVertex((double)f8, (double)f9, (double)(-f8));
-            tessellator1.addVertex((double)(-f8), (double)f9, (double)(-f8));
-            tessellator1.addVertex((double)(-f8), (double)f9, (double)f8);
-            tessellator1.addVertex((double)(-f8), (double)f10, (double)f8);
-            tessellator1.addVertex((double)(-f8), (double)f10, (double)(-f8));
-            tessellator1.addVertex((double)(-f8), (double)f10, (double)(-f8));
-            tessellator1.addVertex((double)(-f8), (double)f10, (double)f8);
-            tessellator1.addVertex((double)f8, (double)f10, (double)f8);
-            tessellator1.addVertex((double)f8, (double)f10, (double)(-f8));
-            tessellator1.draw();
+            f5 = 1.0F;
+            f6 = -((float)(d0 + 65.0D));
+            f7 = -f5;
+            tessellator.startDrawingQuads();
+            tessellator.setColorRGBA_I(0, 255);
+            tessellator.addVertex((double)(-f5), (double)f6, (double)f5);
+            tessellator.addVertex((double)f5, (double)f6, (double)f5);
+            tessellator.addVertex((double)f5, (double)f7, (double)f5);
+            tessellator.addVertex((double)(-f5), (double)f7, (double)f5);
+            tessellator.addVertex((double)(-f5), (double)f7, (double)(-f5));
+            tessellator.addVertex((double)f5, (double)f7, (double)(-f5));
+            tessellator.addVertex((double)f5, (double)f6, (double)(-f5));
+            tessellator.addVertex((double)(-f5), (double)f6, (double)(-f5));
+            tessellator.addVertex((double)f5, (double)f7, (double)(-f5));
+            tessellator.addVertex((double)f5, (double)f7, (double)f5);
+            tessellator.addVertex((double)f5, (double)f6, (double)f5);
+            tessellator.addVertex((double)f5, (double)f6, (double)(-f5));
+            tessellator.addVertex((double)(-f5), (double)f6, (double)(-f5));
+            tessellator.addVertex((double)(-f5), (double)f6, (double)f5);
+            tessellator.addVertex((double)(-f5), (double)f7, (double)f5);
+            tessellator.addVertex((double)(-f5), (double)f7, (double)(-f5));
+            tessellator.addVertex((double)(-f5), (double)f7, (double)(-f5));
+            tessellator.addVertex((double)(-f5), (double)f7, (double)f5);
+            tessellator.addVertex((double)f5, (double)f7, (double)f5);
+            tessellator.addVertex((double)f5, (double)f7, (double)(-f5));
+            tessellator.draw();
         }
 
         if (world.provider.isSkyColored())

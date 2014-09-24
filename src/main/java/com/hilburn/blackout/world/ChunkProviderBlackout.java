@@ -131,79 +131,7 @@ public class ChunkProviderBlackout implements IChunkProvider
 
     public void func_147424_a(int p_147424_1_, int p_147424_2_, Block[] p_147424_3_)
     {
-        byte b0 = 63;
-        this.biomesForGeneration = this.worldObj.getWorldChunkManager().getBiomesForGeneration(this.biomesForGeneration, p_147424_1_ * 4 - 2, p_147424_2_ * 4 - 2, 10, 10);
-        this.func_147423_a(p_147424_1_ * 4, 0, p_147424_2_ * 4);
 
-        for (int k = 0; k < 4; ++k)
-        {
-            int l = k * 5;
-            int i1 = (k + 1) * 5;
-
-            for (int j1 = 0; j1 < 4; ++j1)
-            {
-                int k1 = (l + j1) * 33;
-                int l1 = (l + j1 + 1) * 33;
-                int i2 = (i1 + j1) * 33;
-                int j2 = (i1 + j1 + 1) * 33;
-
-                for (int k2 = 0; k2 < 32; ++k2)
-                {
-                    double d0 = 0.125D;
-                    double d1 = this.field_147434_q[k1 + k2];
-                    double d2 = this.field_147434_q[l1 + k2];
-                    double d3 = this.field_147434_q[i2 + k2];
-                    double d4 = this.field_147434_q[j2 + k2];
-                    double d5 = (this.field_147434_q[k1 + k2 + 1] - d1) * d0;
-                    double d6 = (this.field_147434_q[l1 + k2 + 1] - d2) * d0;
-                    double d7 = (this.field_147434_q[i2 + k2 + 1] - d3) * d0;
-                    double d8 = (this.field_147434_q[j2 + k2 + 1] - d4) * d0;
-
-                    for (int l2 = 0; l2 < 8; ++l2)
-                    {
-                        double d9 = 0.25D;
-                        double d10 = d1;
-                        double d11 = d2;
-                        double d12 = (d3 - d1) * d9;
-                        double d13 = (d4 - d2) * d9;
-
-                        for (int i3 = 0; i3 < 4; ++i3)
-                        {
-                            int j3 = i3 + k * 4 << 12 | 0 + j1 * 4 << 8 | k2 * 8 + l2;
-                            short short1 = 256;
-                            j3 -= short1;
-                            double d14 = 0.25D;
-                            double d16 = (d11 - d10) * d14;
-                            double d15 = d10 - d16;
-
-                            for (int k3 = 0; k3 < 4; ++k3)
-                            {
-                                if ((d15 += d16) > 0.0D)
-                                {
-                                    p_147424_3_[j3 += short1] = Blocks.stone;
-                                }
-                                else if (k2 * 8 + l2 < b0)
-                                {
-                                    p_147424_3_[j3 += short1] = Blocks.water;
-                                }
-                                else
-                                {
-                                    p_147424_3_[j3 += short1] = null;
-                                }
-                            }
-
-                            d10 += d12;
-                            d11 += d13;
-                        }
-
-                        d1 += d5;
-                        d2 += d6;
-                        d3 += d7;
-                        d4 += d8;
-                    }
-                }
-            }
-        }
     }
 
     public void replaceBlocksForBiome(int p_147422_1_, int p_147422_2_, Block[] p_147422_3_, byte[] p_147422_4_, BiomeGenBase[] p_147422_5_)
@@ -211,18 +139,6 @@ public class ChunkProviderBlackout implements IChunkProvider
         ChunkProviderEvent.ReplaceBiomeBlocks event = new ChunkProviderEvent.ReplaceBiomeBlocks(this, p_147422_1_, p_147422_2_, p_147422_3_, p_147422_4_, p_147422_5_, this.worldObj);
         MinecraftForge.EVENT_BUS.post(event);
         if (event.getResult() == Result.DENY) return;
-
-//        double d0 = 0.03125D;
-//        this.stoneNoise = this.field_147430_m.func_151599_a(this.stoneNoise, (double)(p_147422_1_ * 16), (double)(p_147422_2_ * 16), 16, 16, d0 * 2.0D, d0 * 2.0D, 1.0D);
-//
-//        for (int k = 0; k < 16; ++k)
-//        {
-//            for (int l = 0; l < 16; ++l)
-//            {
-//                BiomeGenBase biomegenbase = p_147422_5_[l + k * 16];
-//                biomegenbase.genTerrainBlocks(this.worldObj, this.rand, p_147422_3_, p_147422_4_, p_147422_1_ * 16 + k, p_147422_2_ * 16 + l, this.stoneNoise[l + k * 16]);
-//            }
-//        }
     }
 
     /**
@@ -242,7 +158,7 @@ public class ChunkProviderBlackout implements IChunkProvider
         this.rand.setSeed((long)p_73154_1_ * 341873128712L + (long)p_73154_2_ * 132897987541L);
         Block[] ablock = new Block[65536];
         byte[] abyte = new byte[65536];
-        //this.func_147424_a(p_73154_1_, p_73154_2_, ablock);
+        //this.func_147424_a(p_73154_1_, p_73154_2_, ablock); 				disabled for void world
         this.biomesForGeneration = this.worldObj.getWorldChunkManager().loadBlockGeneratorData(this.biomesForGeneration, p_73154_1_ * 16, p_73154_2_ * 16, 16, 16);
         this.replaceBlocksForBiome(p_73154_1_, p_73154_2_, ablock, abyte, this.biomesForGeneration);
         this.caveGenerator.func_151539_a(this, this.worldObj, p_73154_1_, p_73154_2_, ablock);
