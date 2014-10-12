@@ -6,7 +6,7 @@ public class BlockInfo {
 	public static final String SMALLCHESTTRAP_UNLOCALIZEDNAME = "trappedchest";
 	public static final String SMALLCHEST_TE_KEY = "chest";
 	
-	public static final String STELLARCONSTRUCTOR_UNLOCALIZEDNAME = "stellarconstructor";
+	public static final String STELLARCONSTRUCTOR_UNLOCALIZEDNAME = "stellar_constructor";
 	public static final String STELLARCONSTRUCTOR_TE_KEY = "stellarconstructor";
 	
 	public static final String ICEUNMELTING_UNLOCALIZEDNAME = "ice";

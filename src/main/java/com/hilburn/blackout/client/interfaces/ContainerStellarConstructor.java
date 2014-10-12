@@ -33,7 +33,7 @@ public class ContainerStellarConstructor extends Container{
 		}
 		for (int y=0;y<3;y++){
 			for (int x=0;x<9;x++){
-				addSlotToContainer(new Slot(invPlayer, x+y*9+9, 8+18*x,30+y*18+84));
+				addSlotToContainer(new Slot(invPlayer, x+y*9+9, 8+18*x,84+y*18));
 			}
 		}
 		
@@ -42,7 +42,7 @@ public class ContainerStellarConstructor extends Container{
 				addSlotToContainer(new Slot(stellarconstructor, x+y*3, 30+18*x,17+y*18));
 			}
 		}
-		addSlotToContainer(new Slot(stellarconstructor,9,120,31));
+		addSlotToContainer(new Slot(stellarconstructor,9,124,35));
 		
 
 	}

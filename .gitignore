@@ -5,6 +5,7 @@
 /.metadata/
 /.settings/
 /assets/
+/asm/
 /bin/
 /build/
 /config/
@@ -12,7 +13,6 @@
 /logs/
 /lib/
 /mods/
-/resourcepacks/
 /saves/
 /.classpath
 /.project
@@ -22,3 +22,5 @@
 /server.properties
 /world
 /*.zip
+*.psd
+*.414

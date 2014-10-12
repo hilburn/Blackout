@@ -14,7 +14,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public class GuiStellarConstructor extends GuiContainer{
-    ResourceLocation guiTexture = new ResourceLocation("blackout", "textures/gui/stellar_constructor.png");
+    private static final ResourceLocation guiTexture = new ResourceLocation("blackout", "textures/gui/stellar_constructor.png");
 	
 	public GuiStellarConstructor(InventoryPlayer invPlayer, TileEntityStellarConstructor stellarconstructor) {
 		super(new ContainerStellarConstructor(invPlayer,stellarconstructor));
@@ -22,7 +22,7 @@ public class GuiStellarConstructor extends GuiContainer{
 
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float f, int x, int y) {
-		GL11.glColor4f(1, 1, 1, 1);
+		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		Minecraft.getMinecraft().getTextureManager().bindTexture(guiTexture);
 		drawTexturedModalRect(guiLeft,guiTop,0,0,176,166);
 	}

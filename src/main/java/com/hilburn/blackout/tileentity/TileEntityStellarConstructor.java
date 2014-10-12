@@ -54,25 +54,22 @@ public class TileEntityStellarConstructor extends TileEntity implements IInvento
 	}
 
 	@Override
-	public boolean isUseableByPlayer(EntityPlayer p_70300_1_) {
-		return false;
+	public boolean isUseableByPlayer(EntityPlayer player) {
+		return player.getDistanceSq(xCoord+0.5, yCoord+0.5, zCoord+0.5)<=64;
 	}
 
 	@Override
 	public void openInventory() {
-		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
 	public void closeInventory() {
-		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
 	public boolean isItemValidForSlot(int p_94041_1_, ItemStack p_94041_2_) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
