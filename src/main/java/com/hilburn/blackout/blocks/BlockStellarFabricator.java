@@ -10,16 +10,16 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 
 import com.hilburn.blackout.Blackout;
-import com.hilburn.blackout.tileentity.TileEntityStellarConstructor;
+import com.hilburn.blackout.tileentity.TileEntityStellarFabricator;
 
-public class BlockStellarConstructor extends BlockContainer{
+public class BlockStellarFabricator extends BlockContainer{
 
 	public IIcon[] icons = new IIcon[6];
 	
-	protected BlockStellarConstructor() {
+	protected BlockStellarFabricator() {
 		super(Material.iron);
-		this.setBlockName(BlockInfo.STELLARCONSTRUCTOR_UNLOCALIZEDNAME);
-		this.setBlockTextureName("Blackout" + ":" + BlockInfo.STELLARCONSTRUCTOR_UNLOCALIZEDNAME);
+		this.setBlockName(BlockInfo.STELLARFABRICATOR_UNLOCALIZEDNAME);
+		this.setBlockTextureName("Blackout" + ":" + BlockInfo.STELLARFABRICATOR_UNLOCALIZEDNAME);
 		this.setCreativeTab(CreativeTabs.tabDecorations);
 	}
 	
@@ -27,11 +27,8 @@ public class BlockStellarConstructor extends BlockContainer{
 	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float hitX, float hitY, float hitZ){
 		if (!world.isRemote && !player.isSneaking()){
 			player.openGui(Blackout.instance, 0, world, x, y, z);
-			return true;
 		}
-		else
-			return false;
-		
+		return true;
 	}
 
 	@Override
@@ -52,7 +49,7 @@ public class BlockStellarConstructor extends BlockContainer{
 	@Override
     public TileEntity createNewTileEntity(World p_149915_1_, int p_149915_2_)
     {
-        return new TileEntityStellarConstructor();
+        return new TileEntityStellarFabricator();
     }
 
 }

@@ -7,17 +7,17 @@ import net.minecraft.util.ResourceLocation;
 
 import org.lwjgl.opengl.GL11;
 
-import com.hilburn.blackout.tileentity.TileEntityStellarConstructor;
+import com.hilburn.blackout.tileentity.TileEntityStellarFabricator;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public class GuiStellarConstructor extends GuiContainer{
-    private static final ResourceLocation guiTexture = new ResourceLocation("blackout", "textures/gui/stellar_constructor.png");
+public class GuiStellarFabricator extends GuiContainer{
+    private static final ResourceLocation guiTexture = new ResourceLocation("blackout", "textures/gui/stellar_fabricator.png");
 	
-	public GuiStellarConstructor(InventoryPlayer invPlayer, TileEntityStellarConstructor stellarconstructor) {
-		super(new ContainerStellarConstructor(invPlayer,stellarconstructor));
+	public GuiStellarFabricator(InventoryPlayer invPlayer, TileEntityStellarFabricator stellarfabricator) {
+		super(new ContainerStellarFabricator(invPlayer,stellarfabricator));
 	}
 
 	@Override

@@ -5,7 +5,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
 import com.hilburn.blackout.Blackout;
-import com.hilburn.blackout.tileentity.TileEntityStellarConstructor;
+import com.hilburn.blackout.tileentity.TileEntityStellarFabricator;
 
 import cpw.mods.fml.common.network.IGuiHandler;
 import cpw.mods.fml.common.network.NetworkRegistry;
@@ -21,8 +21,8 @@ public class GuiHandler implements IGuiHandler{
 		switch (ID){
 		case 0:
 			TileEntity te=world.getTileEntity(x, y, z);
-			if (te!=null && te instanceof TileEntityStellarConstructor){
-				return new ContainerStellarConstructor(player.inventory, (TileEntityStellarConstructor)te);
+			if (te!=null && te instanceof TileEntityStellarFabricator){
+				return new ContainerStellarFabricator(player.inventory, (TileEntityStellarFabricator)te);
 			}
 			break;
 		}
@@ -34,8 +34,8 @@ public class GuiHandler implements IGuiHandler{
 		switch (ID){
 		case 0:
 			TileEntity te=world.getTileEntity(x, y, z);
-			if (te!=null && te instanceof TileEntityStellarConstructor){
-				return new GuiStellarConstructor(player.inventory, (TileEntityStellarConstructor)te);
+			if (te!=null && te instanceof TileEntityStellarFabricator){
+				return new GuiStellarFabricator(player.inventory, (TileEntityStellarFabricator)te);
 			}
 			break;
 		}

@@ -3,25 +3,23 @@ package com.hilburn.blackout.client.interfaces;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
-import net.minecraft.inventory.ICrafting;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
-import net.minecraft.inventory.SlotCrafting;
 import net.minecraft.item.ItemStack;
 
-import com.hilburn.blackout.tileentity.TileEntityStellarConstructor;
+import com.hilburn.blackout.tileentity.TileEntityStellarFabricator;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class ContainerStellarConstructor extends Container{
+public class ContainerStellarFabricator extends Container{
 	
-	private TileEntityStellarConstructor stellarconstructor;
+	private TileEntityStellarFabricator stellarconstructor;
 	private InventoryPlayer invPlayer;
 	
-	public ContainerStellarConstructor(InventoryPlayer invPlayer, TileEntityStellarConstructor stellarconstructor){
+	public ContainerStellarFabricator(InventoryPlayer invPlayer, TileEntityStellarFabricator stellarconstructor){
 		this.invPlayer=invPlayer;
 		this.stellarconstructor=stellarconstructor;
-		//this.oldHasChest=true;
 		popSlots();
 	}
 	
@@ -42,14 +40,13 @@ public class ContainerStellarConstructor extends Container{
 				addSlotToContainer(new Slot(stellarconstructor, x+y*3, 30+18*x,17+y*18));
 			}
 		}
-		addSlotToContainer(new Slot(stellarconstructor,9,124,35));
-		
-
+		addSlotToContainer(new SlotOutput(stellarconstructor,9,124,35));
+	
 	}
 	
 	@Override
 	public boolean canInteractWith(EntityPlayer player) {
-		return true;//stellarconstructor.isUseableByPlayer(player);
+		return stellarconstructor.isUseableByPlayer(player);
 	}
 	
 	
@@ -198,5 +195,12 @@ public class ContainerStellarConstructor extends Container{
 //			}
 //		}
 //		oldHasChest=stellarconstructor.getHasChest();
+	}
+	
+	
+	
+	@Override
+	public void onCraftMatrixChanged(IInventory p_onCraftMatrixChanged_1_) {
+		super.onCraftMatrixChanged(p_onCraftMatrixChanged_1_);
 	}
 }
