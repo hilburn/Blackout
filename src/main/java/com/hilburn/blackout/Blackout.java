@@ -4,6 +4,7 @@ import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.MinecraftForge;
 
 import com.hilburn.blackout.blocks.ModBlocks;
+import com.hilburn.blackout.client.interfaces.GuiHandler;
 import com.hilburn.blackout.handlers.BlockHandler;
 import com.hilburn.blackout.handlers.PlayerHandler;
 import com.hilburn.blackout.proxies.CommonProxy;
@@ -39,11 +40,12 @@ public class Blackout {
 		
 		DimensionManager.unregisterProviderType(0);
         DimensionManager.registerProviderType(0, WorldProviderBlackout.class, true);
+
 	}
 	
 	@EventHandler
 	public void init(FMLInitializationEvent event){
-
+		 new GuiHandler();
 	}
 	
 	@EventHandler
