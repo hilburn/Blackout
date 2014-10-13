@@ -44,7 +44,7 @@ repositories {
     }
 }
 
-version = "0.5.7"
+version = "0.6.0"
 group= "com.hilburn.blackout" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = "blackout"
 
