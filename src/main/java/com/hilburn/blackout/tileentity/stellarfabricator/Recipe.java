@@ -12,16 +12,18 @@ public class Recipe {
 	private long power;
 	private int omega;
 	private int torque;
+	private int time;
 	
 	private static ArrayList<Recipe> recipes = new ArrayList<Recipe>();
 	
-	public Recipe(ItemStack[] input, ItemStack output, long power, int omega, int torque)
+	public Recipe(ItemStack[] input, ItemStack output, long power, int omega, int torque, int time)
 	{
 		this.setInput(input);
 		this.setOutput(output);
 		this.setPower(power);
 		this.setOmega(omega);
 		this.setTorque(torque);
+		this.setTime(time);
 		
 		recipes.add(this);
 	}
@@ -30,7 +32,7 @@ public class Recipe {
 	{
 		String[] commaSplit = configString.split(" *, *");
 		this.input=new ItemStack[9];
-		if (commaSplit.length!=12)
+		if (commaSplit.length<13||commaSplit.length>14)
 		{
 			System.out.println("Error: "+configString+" is invalid");
 			return;
@@ -61,14 +63,21 @@ public class Recipe {
 			System.out.println("Error: "+configString+" has no valid Shaft Power Input");
 			return;
 		}
-		if (omega==null) omega=0;
-		if (torque==null) torque=0;
-		if (power==null) power=0L;
+		if (omega==null) omega=1;
+		if (torque==null) torque=1;
+		if (power==null) power=1L;
 		setOmega(omega);
 		setTorque(torque);
 		setPower(power);
-		
-		recipes.add(this);
+		int time = 300;
+		if (commaSplit.length==14) time=Integer.valueOf(commaSplit[13]);
+		time = Math.max(time, 1);
+		setTime(time);
+	}
+	
+	public static void addRecipe(String input)
+	{
+		recipes.add(new Recipe(input));
 	}
 	
 	
@@ -84,7 +93,7 @@ public class Recipe {
 			System.out.println(string+" is and invalid ItemStack");
 			return null;
 		}
-		return new ItemStack(item,damage,stackSize);
+		return new ItemStack(item,stackSize,damage);
 	}
 	
 	public boolean inputMatch(ItemStack[] input)
@@ -100,13 +109,16 @@ public class Recipe {
 		return true;
 	}
 	
-	public static int getRecipe(ItemStack[] input)
+	public static Recipe getRecipe(ItemStack[] input)
 	{
-		for (int i=0;i<recipes.size();i++)
-		{
-			if (recipes.get(i).inputMatch(input)) return i;
-		}
-		return -1;
+//		for (int i=0;i<recipes.size();i++)
+//		{
+//			if (recipes.get(i).inputMatch(input)) return i;
+//		}
+//		return -1;
+		for (Recipe recipe:recipes)
+			if (recipe.inputMatch(input)) return recipe;
+		return null;
 	}
 	
 	public static int[] decrStackSize(int recipe)
@@ -161,6 +173,14 @@ public class Recipe {
 
 	private void setTorque(int torque) {
 		this.torque = torque;
+	}
+
+	public int getTime() {
+		return time;
+	}
+
+	private void setTime(int time) {
+		this.time = time;
 	}
 	
 	

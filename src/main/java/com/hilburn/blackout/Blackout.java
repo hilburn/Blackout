@@ -1,5 +1,7 @@
 package com.hilburn.blackout;
 
+import java.io.File;
+
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.MinecraftForge;
 
@@ -24,6 +26,7 @@ public class Blackout {
 	
 	BlockHandler blockEvent = new BlockHandler();
 	PlayerHandler playerEvent = new PlayerHandler();
+	private File config;
 	
 	@Instance(ModInformation.MODID)
 	public static Blackout instance;
@@ -39,7 +42,7 @@ public class Blackout {
 		MinecraftForge.EVENT_BUS.register(blockEvent);
 		MinecraftForge.EVENT_BUS.register(playerEvent);
 		
-		ConfigHandler.init(event.getSuggestedConfigurationFile());
+		config=event.getSuggestedConfigurationFile();
 		
 		DimensionManager.unregisterProviderType(0);
         DimensionManager.registerProviderType(0, WorldProviderBlackout.class, true);
@@ -53,7 +56,7 @@ public class Blackout {
 	
 	@EventHandler
 	public void postInit(FMLPostInitializationEvent event){
-		
+		ConfigHandler.init(config);
 	}
 	
 }

@@ -18,6 +18,91 @@ public class TileEntityStellarFabricator extends TileEntity implements IInventor
 	private int torque = 0;
 	private int omega = 0;
 	
+	private Recipe recipe;
+	
+	private int recipeRunTime;
+	
+	private static final double LOG2 = Math.log(2); 
+	
+	@Override
+	public void updateEntity() {
+		super.updateEntity();
+		if (recipe!=null)
+		{
+			if (torque>=recipe.getTorque()&&omega>=recipe.getOmega()&&power>=recipe.getPower())
+			{
+				recipeRunTime++;
+				int recipeTime = getRecipeTime();
+				if (!canCraft()) recipeRunTime = Math.min(recipeTime,recipeRunTime);
+				if (recipeRunTime>recipeTime)
+				{
+					recipeRunTime=0;
+					decrCraftingGrid();
+					incResult();
+					checkForRecipe();
+				}
+			}
+		}
+	}
+	
+	public int getRecipeTime()
+	{
+		int result = recipe.getTime() - 20*log2(omega/recipe.getOmega());
+		return Math.max(result, 0);
+	}
+	
+	public int log2(double x)
+	{
+		return (int)(Math.log(x)/LOG2);
+	}
+	
+	public void checkForRecipe()
+	{
+		recipe = Recipe.getRecipe(inventory);
+//		if (recipe!=null)
+//		{
+//			ItemStack result = recipe.getOutput();
+//			result.stackSize=0;
+//			setInventorySlotContents(9,result);
+//		}
+//		else
+//		{
+//			setInventorySlotContents(9,null);
+//		}
+		if (recipe==null)
+			recipeRunTime=0;
+	}
+	
+	public void decrCraftingGrid()
+	{
+		if (recipe==null) checkForRecipe();
+		if (recipe!=null)
+		{
+			for (int i=0;i<9;i++)
+			{
+				ItemStack[] recipeInput = recipe.getInput();
+				if (recipeInput[i]!=null)decrStackSize(i,recipeInput[i].stackSize);
+			}
+		}
+	}
+	
+	public void incResult()
+	{
+		ItemStack currentStack = getStackInSlot(9);
+		if (currentStack==null)
+			setInventorySlotContents(9, recipe.getOutput().copy());
+		else
+		{
+			currentStack.stackSize += recipe.getOutput().stackSize;
+			setInventorySlotContents(9, currentStack);
+		}
+	}
+	
+	private boolean canCraft()
+	{
+		ItemStack craft = getStackInSlot(9); 
+		return (craft==null||(craft.isItemEqual(recipe.getOutput())&&(craft.stackSize+recipe.getOutput().stackSize<=craft.getMaxStackSize())));
+	}
 	
 	@Override
 	public int getSizeInventory() {
@@ -40,6 +125,7 @@ public class TileEntityStellarFabricator extends TileEntity implements IInventor
 				itemstack=itemstack.splitStack(count);
 			}
 		}
+		this.markDirty();
 		return itemstack;
 	}
 
@@ -51,6 +137,7 @@ public class TileEntityStellarFabricator extends TileEntity implements IInventor
 	@Override
 	public void setInventorySlotContents(int slot, ItemStack stack) {
 		inventory[slot]=stack;
+		this.markDirty();
 	}
 
 	@Override
@@ -75,7 +162,6 @@ public class TileEntityStellarFabricator extends TileEntity implements IInventor
 
 	@Override
 	public void openInventory() {
-		
 	}
 
 	@Override
@@ -91,6 +177,7 @@ public class TileEntityStellarFabricator extends TileEntity implements IInventor
 	@Override
 	public void writeToNBT(NBTTagCompound compound) {
 		super.writeToNBT(compound);
+		compound.setInteger("RunTime", recipeRunTime);
 		NBTTagList items=new NBTTagList();
 		for (int i=0; i<this.getSizeInventory();i++){
 			ItemStack stack=getStackInSlot(i);
@@ -111,10 +198,12 @@ public class TileEntityStellarFabricator extends TileEntity implements IInventor
 		for (int i=0;i<items.tagCount();i++){
 			NBTTagCompound item = (NBTTagCompound)items.getCompoundTagAt(i);
 			int slot = item.getByte("Slot");
-			if (slot>=0 && slot<31){
+			if (slot>=0 && slot<10){
 				setInventorySlotContents(slot, ItemStack.loadItemStackFromNBT(item));
 			}
 		}
+		if (compound.hasKey("RunTime"))recipeRunTime=compound.getInteger("RunTime");
+		checkForRecipe();
 	}
 
 	@Override
@@ -163,7 +252,7 @@ public class TileEntityStellarFabricator extends TileEntity implements IInventor
 
 	@Override
 	public boolean canReadFrom(ForgeDirection dir) {
-		return true;
+		return dir!=ForgeDirection.UP;
 	}
 
 	@Override
@@ -179,6 +268,7 @@ public class TileEntityStellarFabricator extends TileEntity implements IInventor
 
 	@Override
 	public int getMinTorque(int available) {
+		if (recipe!=null) return recipe.getTorque();
 		return 0;
 	}
 

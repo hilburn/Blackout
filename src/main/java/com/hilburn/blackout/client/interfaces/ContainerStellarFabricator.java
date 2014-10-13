@@ -31,7 +31,7 @@ public class ContainerStellarFabricator extends Container{
 		}
 		for (int y=0;y<3;y++){
 			for (int x=0;x<9;x++){
-				addSlotToContainer(new Slot(invPlayer, x+y*9+9, 8+18*x,84+y*18));
+				addSlotToContainer(new Slot(invPlayer, x+(y+1)*9, 8+18*x,84+y*18));
 			}
 		}
 		
@@ -194,13 +194,20 @@ public class ContainerStellarFabricator extends Container{
 //				((ICrafting)player).sendProgressBarUpdate(this, 0, 1);
 //			}
 //		}
-//		oldHasChest=stellarconstructor.getHasChest();
 	}
 	
-	
-	
-	@Override
-	public void onCraftMatrixChanged(IInventory p_onCraftMatrixChanged_1_) {
-		super.onCraftMatrixChanged(p_onCraftMatrixChanged_1_);
-	}
+
+		
+    @Override
+    public ItemStack slotClick(int slotIndex, int button, int modifier, EntityPlayer player) {
+    	ItemStack result = super.slotClick(slotIndex, button, modifier, player);
+    	if (slotIndex >= 36 && slotIndex < 45) {
+            //System.out.println("Crafting Table changed");
+        	stellarconstructor.checkForRecipe();
+        }
+//    	else if (slotIndex==45){
+//    		if (result!=null) stellarconstructor.updateCraftingGrid();
+//    	}
+        return result;
+    }
 }
