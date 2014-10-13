@@ -5,7 +5,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
 import com.hilburn.blackout.Blackout;
-import com.hilburn.blackout.tileentity.TileEntityStellarFabricator;
+import com.hilburn.blackout.tileentity.stellarfabricator.TileEntityStellarFabricator;
 
 import cpw.mods.fml.common.network.IGuiHandler;
 import cpw.mods.fml.common.network.NetworkRegistry;

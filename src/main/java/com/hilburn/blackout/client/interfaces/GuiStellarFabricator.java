@@ -7,7 +7,7 @@ import net.minecraft.util.ResourceLocation;
 
 import org.lwjgl.opengl.GL11;
 
-import com.hilburn.blackout.tileentity.TileEntityStellarFabricator;
+import com.hilburn.blackout.tileentity.stellarfabricator.TileEntityStellarFabricator;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;

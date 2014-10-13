@@ -1,4 +1,4 @@
-package com.hilburn.blackout.tileentity;
+package com.hilburn.blackout.tileentity.stellarfabricator;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;

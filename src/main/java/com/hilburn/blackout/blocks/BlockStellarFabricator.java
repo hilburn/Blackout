@@ -10,7 +10,7 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 
 import com.hilburn.blackout.Blackout;
-import com.hilburn.blackout.tileentity.TileEntityStellarFabricator;
+import com.hilburn.blackout.tileentity.stellarfabricator.TileEntityStellarFabricator;
 
 public class BlockStellarFabricator extends BlockContainer{
 

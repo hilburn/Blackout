@@ -3,7 +3,7 @@ package com.hilburn.blackout.blocks;
 import net.minecraft.block.Block;
 
 import com.hilburn.blackout.tileentity.TileEntitySmallChest;
-import com.hilburn.blackout.tileentity.TileEntityStellarFabricator;
+import com.hilburn.blackout.tileentity.stellarfabricator.TileEntityStellarFabricator;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 
