@@ -19,7 +19,7 @@ public class StellarFabricatorNEIRecipeHandler extends TemplateRecipeHandler
 
     private static final String STELLARFABRICATOR_RECIPES_ID = "blackout.stellar_fabricator";
 
-    private ResourceLocation texture = new ResourceLocation("blackout", "textures/gui/stellar_fabricator.png");
+    private ResourceLocation texture = new ResourceLocation("blackout", "textures/gui/stellar_fabricator_NEI.png");
 
     // GUI slot offsets, in GUI-relative pixel values.
     private static final int INPUT_X_OFS = 25;

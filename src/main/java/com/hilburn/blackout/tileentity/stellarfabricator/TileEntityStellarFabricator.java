@@ -18,28 +18,42 @@ public class TileEntityStellarFabricator extends TileEntity implements IInventor
 	private int torque = 0;
 	private int omega = 0;
 	
+	public short update = 0;
+	
 	private Recipe recipe;
 	
 	private int recipeRunTime;
+	private int recipeTime;
+	
+	private static int barsize=50;
+	
+	private int progressBar=0;
+	private int omegaBar=0;
+	private int torqueBar=0;
+	private int powerBar=0;
 	
 	private static final double LOG2 = Math.log(2); 
 	
 	@Override
 	public void updateEntity() {
 		super.updateEntity();
-		if (recipe!=null)
+		if (!worldObj.isRemote)
 		{
-			if (torque>=recipe.getTorque()&&omega>=recipe.getOmega()&&power>=recipe.getPower())
+			if (recipe!=null)
 			{
-				recipeRunTime++;
-				int recipeTime = getRecipeTime();
-				if (!canCraft()) recipeRunTime = Math.min(recipeTime,recipeRunTime);
-				if (recipeRunTime>recipeTime)
+				if (torque>=recipe.getTorque()&&omega>=recipe.getOmega()&&power>=recipe.getPower())
 				{
-					recipeRunTime=0;
-					decrCraftingGrid();
-					incResult();
-					checkForRecipe();
+					recipeRunTime++;
+					int recipeTime = getRecipeTime();
+					if (!canCraft()) recipeRunTime = Math.min(recipeTime,recipeRunTime);
+					updateArrowWidth();
+					if (recipeRunTime>recipeTime)
+					{
+						recipeRunTime=0;
+						decrCraftingGrid();
+						incResult();
+						checkForRecipe();
+					}
 				}
 			}
 		}
@@ -47,8 +61,9 @@ public class TileEntityStellarFabricator extends TileEntity implements IInventor
 	
 	public int getRecipeTime()
 	{
-		int result = recipe.getTime() - 20*log2(omega/recipe.getOmega());
-		return Math.max(result, 0);
+		if ((update&3)>0)
+			recipeTime = (recipe!=null)?recipe.getTime() - 20*log2(omega/recipe.getOmega()):0;
+		return Math.max(recipeTime, 0);
 	}
 	
 	public int log2(double x)
@@ -59,23 +74,19 @@ public class TileEntityStellarFabricator extends TileEntity implements IInventor
 	public void checkForRecipe()
 	{
 		recipe = Recipe.getRecipe(inventory);
-//		if (recipe!=null)
-//		{
-//			ItemStack result = recipe.getOutput();
-//			result.stackSize=0;
-//			setInventorySlotContents(9,result);
-//		}
-//		else
-//		{
-//			setInventorySlotContents(9,null);
-//		}
 		if (recipe==null)
+		{
 			recipeRunTime=0;
+			progressBar=0;
+		}
+		else
+			getRecipeTime();
+		update|=1;
 	}
 	
 	public void decrCraftingGrid()
 	{
-		if (recipe==null) checkForRecipe();
+		//if (recipe==null) checkForRecipe();
 		if (recipe!=null)
 		{
 			for (int i=0;i<9;i++)
@@ -175,6 +186,12 @@ public class TileEntityStellarFabricator extends TileEntity implements IInventor
 	}
 
 	@Override
+	public void markDirty() {
+		super.markDirty();
+		update|=1;
+	}
+	
+	@Override
 	public boolean isItemValidForSlot(int slot, ItemStack stack) {
 		return slot<9;
 	}
@@ -208,6 +225,7 @@ public class TileEntityStellarFabricator extends TileEntity implements IInventor
 			}
 		}
 		if (compound.hasKey("RunTime"))recipeRunTime=compound.getInteger("RunTime");
+		this.update=Short.MAX_VALUE;
 		checkForRecipe();
 	}
 
@@ -243,16 +261,19 @@ public class TileEntityStellarFabricator extends TileEntity implements IInventor
 	@Override
 	public void setOmega(int omega) {
 		this.omega=omega;
+		update|=2;
 	}
 
 	@Override
 	public void setTorque(int torque) {
 		this.torque=torque;
+		update|=4;
 	}
 
 	@Override
 	public void setPower(long power) {
 		this.power=power;
+		update|=8;
 	}
 
 	@Override
@@ -269,6 +290,7 @@ public class TileEntityStellarFabricator extends TileEntity implements IInventor
 	public void noInputMachine() {
 		this.torque=this.omega=0;
 		this.power=0;
+		update|=14;
 	}
 
 	@Override
@@ -276,6 +298,57 @@ public class TileEntityStellarFabricator extends TileEntity implements IInventor
 		if (recipe!=null) return recipe.getTorque();
 		return 0;
 	}
+
+	public void updateArrowWidth() {
+		int progress = getRecipeTime();
+		if (progress>0)
+			progress = 22*recipeRunTime/progress;
+		if (progress!=progressBar)
+		{
+			progressBar = progress;
+			update|=16;
+		}
+	}
+
+	public int getProgressBar() {
+		return progressBar;
+	}
 	
+	public void setProgressBar(int pb)
+	{
+		this.progressBar=pb;
+	}
+
+	public int getOmegaBar()
+	{
+		if ((update&3)>0)
+		{
+			if (recipe==null) omegaBar=0;
+			else omegaBar = (Math.min(barsize,omega*barsize/recipe.getOmega()));
+			update&=(Integer.MAX_VALUE-2);
+		}
+		return omegaBar;
+	}
 	
+	public int getTorqueBar()
+	{
+		if ((update&5)>0)
+		{
+			if (recipe==null) torqueBar=0;
+			else torqueBar = (Math.min(barsize,torque*barsize/recipe.getTorque()));
+			update&=(Integer.MAX_VALUE-4);
+		}
+		return torqueBar;
+	}
+	
+	public int getPowerBar()
+	{
+		if ((update&9)>0)
+		{
+			if (recipe==null) powerBar=0;
+			else powerBar = (int) (Math.min(barsize,power*barsize/recipe.getPower()));
+			update&=(Integer.MAX_VALUE-8);
+		}
+		return powerBar;
+	}
 }

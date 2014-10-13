@@ -3,7 +3,7 @@ package com.hilburn.blackout.client.interfaces;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
-import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.ICrafting;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
@@ -37,10 +37,10 @@ public class ContainerStellarFabricator extends Container{
 		
 		for (int x=0;x<3;x++){
 			for (int y=0;y<3;y++){
-				addSlotToContainer(new Slot(stellarconstructor, x+y*3, 30+18*x,17+y*18));
+				addSlotToContainer(new Slot(stellarconstructor, x+y*3, 8+18*x,17+y*18));
 			}
 		}
-		addSlotToContainer(new SlotOutput(stellarconstructor,9,124,35));
+		addSlotToContainer(new SlotOutput(stellarconstructor,9,102,35));
 	
 	}
 	
@@ -180,20 +180,26 @@ public class ContainerStellarFabricator extends Container{
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void updateProgressBar(int id, int data) {
-		if (id==0&&data==1){
-			popSlots();
+		switch (id)
+		{
+		case 0:
+			stellarconstructor.setProgressBar(data);
 		}
+			
 	}
 	
 	@Override
 	public void detectAndSendChanges() {
-//		super.detectAndSendChanges();
-//		for (Object player : crafters) {
-//			if (stellarconstructor.getHasChest() != oldHasChest) {
-//				popSlots();
-//				((ICrafting)player).sendProgressBarUpdate(this, 0, 1);
-//			}
-//		}
+		super.detectAndSendChanges();
+		for (Object player : crafters) {
+			if (stellarconstructor.update != 0) {
+				if ((stellarconstructor.update&17)>0)
+				{
+					((ICrafting)player).sendProgressBarUpdate(this, 0, stellarconstructor.getProgressBar());
+				}
+			}
+		}
+		stellarconstructor.update&=(Integer.MAX_VALUE-17);
 	}
 	
 
