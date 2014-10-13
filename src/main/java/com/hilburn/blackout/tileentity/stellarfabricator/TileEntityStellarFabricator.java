@@ -12,7 +12,7 @@ import Reika.RotaryCraft.API.ShaftPowerReceiver;
 public class TileEntityStellarFabricator extends TileEntity implements IInventory, ShaftPowerReceiver {
 
 	private ItemStack[] inventory = new ItemStack[10];
-	private final String name = "Stellar Fabricator";
+	private final static String name = "Stellar Fabricator";
 	
 	private long power = 0;
 	private int torque = 0;
@@ -145,6 +145,11 @@ public class TileEntityStellarFabricator extends TileEntity implements IInventor
 		return name;
 	}
 
+	public static String getStaticName()
+	{
+		return name;
+	}
+	
 	@Override
 	public boolean hasCustomInventoryName() {
 		return true;
@@ -271,5 +276,6 @@ public class TileEntityStellarFabricator extends TileEntity implements IInventor
 		if (recipe!=null) return recipe.getTorque();
 		return 0;
 	}
-
+	
+	
 }

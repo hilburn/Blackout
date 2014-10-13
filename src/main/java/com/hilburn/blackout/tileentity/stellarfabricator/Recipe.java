@@ -182,6 +182,40 @@ public class Recipe {
 	private void setTime(int time) {
 		this.time = time;
 	}
+
+	public static ArrayList<Recipe> getRecipes() {
+		return recipes;
+	}
 	
+	public static ArrayList<Recipe> getRecipeFromInput(ItemStack stack)
+	{
+		ArrayList<Recipe> result = new ArrayList<Recipe>();
+		for (Recipe recipe:recipes)
+		{
+			for (ItemStack input:recipe.getInput())
+			{
+				if (input!=null&&input.isItemEqual(stack))
+				{
+					result.add(recipe);
+					break;
+				}
+			}
+		}
+		return result;
+	}
+	
+	public static ArrayList<Recipe> getRecipeFromOutput(ItemStack stack)
+	{
+		ArrayList<Recipe> result = new ArrayList<Recipe>();
+		for (Recipe recipe:recipes)
+		{
+			if (recipe.getOutput().isItemEqual(stack))
+			{
+				result.add(recipe);
+				break;
+			}
+		}
+		return result;
+	}
 	
 }
