@@ -10,4 +10,7 @@ public class BlockInfo {
 	public static final String STELLARFABRICATOR_TE_KEY = "stellar_fabrictor";
 	
 	public static final String ICEUNMELTING_UNLOCALIZEDNAME = "ice";
+	
+	
+	public static final String MAGNESIUM_UNLOCALIZEDNAME = "magnesium";
 }

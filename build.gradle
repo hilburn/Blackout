@@ -44,14 +44,21 @@ repositories {
     }
 }
 
-version = "0.6.0"
+
 group= "com.hilburn.blackout" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
-archivesBaseName = "blackout"
+archivesBaseName = "Blackout"
 
 minecraft {
-    version = "1.7.10-10.13.1.1217"
+    version = "${config.version.minecraft}-${config.version.forge}"
+	replaceIn "ModInfo.java"
+    replace "@MAJOR@", config.version.mod.major
+    replace "@MINOR@", config.version.mod.minor
+    replace "@REVIS@", config.version.mod.revis
+	
     runDir = "eclipse"
 }
+
+version = "${config.version.mod.major}.${config.version.mod.minor}.${config.version.mod.revis}"
 
 //jar {
 //        manifest {
@@ -82,6 +89,7 @@ processResources
         
     // copy everything else, thats not the mcmod.info
     from(sourceSets.main.resources.srcDirs) {
-        exclude 'mcmod.info'
+        exclude '**/*.psd'
+        exclude '**/*.info'
     }
 }

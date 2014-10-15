@@ -1,9 +1,12 @@
 package com.hilburn.blackout.tileentity.stellarfabricator;
 
 import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 public class Recipe {
@@ -15,6 +18,11 @@ public class Recipe {
 	private int time;
 	
 	private static ArrayList<Recipe> recipes = new ArrayList<Recipe>();
+	
+	public static void clearRecipes()
+	{
+		recipes=new ArrayList<Recipe>();
+	}
 	
 	public Recipe(ItemStack[] input, ItemStack output, long power, int omega, int torque, int time)
 	{
@@ -83,6 +91,8 @@ public class Recipe {
 	
 	private static ItemStack getStackFromString(String string)
 	{
+		NBTTagCompound tag = getNBT(string);
+		if (tag!=null) string = removeNBT(string);
 		String[] colonSplit = string.split(":");
 		if (colonSplit.length<3||colonSplit.length>4) return null;
 		Integer damage = (colonSplit.length==4)?Integer.valueOf(colonSplit[3]):0;
@@ -93,7 +103,55 @@ public class Recipe {
 			System.out.println(string+" is and invalid ItemStack");
 			return null;
 		}
-		return new ItemStack(item,stackSize,damage);
+		ItemStack result = new ItemStack(item,stackSize,damage);
+		result.stackTagCompound = tag;
+		return result;
+	}
+	
+	
+	
+	private static String removeNBT(String string) {
+		return string.substring(0, string.indexOf(".setNBT("));
+	}
+
+	private static NBTTagCompound getNBT(String string)
+	{
+		
+		Pattern pattern = Pattern.compile("\\.setNBT(.*)");
+		Matcher matcher = pattern.matcher(string);
+		if (matcher.find())
+		{
+			String NBT = matcher.group(1);
+			NBT=NBT.substring(1, NBT.length()-2);
+			return getNBTCompound(NBT);
+		}
+		return null;
+	}
+	
+	private static NBTTagCompound getNBTCompound(String nbt)
+	{
+		NBTTagCompound result = new NBTTagCompound();
+		String[] splitString = nbt.split(" *; *");
+		for (String split: splitString)
+		{
+			String[] subSplit = split.split(" *: *");
+			if (subSplit.length>1)
+			{
+				String output = subSplit[1];
+				for (int i=2;i<subSplit.length;i++)
+					output+=":"+subSplit[i];
+				try
+				{
+					int value = Integer.valueOf(output);
+					result.setInteger(subSplit[0], value);
+				}catch(NumberFormatException e){
+					result.setString(subSplit[0], output);
+				}finally{
+				}
+				
+			}
+		}
+		return result;
 	}
 	
 	public boolean inputMatch(ItemStack[] input)
@@ -103,7 +161,7 @@ public class Recipe {
 			if (this.input[i]==null&&input[i]==null) continue;
 			if (this.input[i]==null||input[i]==null) return false;
 			if (input[i].toString().contains("null")) return false;
-			if (this.input[i].getItem()!=input[i].getItem()||this.input[i].getItemDamage()!=input[i].getItemDamage()) return false;
+			if (this.input[i].getItem()!=input[i].getItem()||this.input[i].getItemDamage()!=input[i].getItemDamage()||this.input[i].stackTagCompound!=input[i].stackTagCompound) return false;
 			if (this.input[i].stackSize>input[i].stackSize) return false;
 		}
 		return true;
@@ -111,11 +169,6 @@ public class Recipe {
 	
 	public static Recipe getRecipe(ItemStack[] input)
 	{
-//		for (int i=0;i<recipes.size();i++)
-//		{
-//			if (recipes.get(i).inputMatch(input)) return i;
-//		}
-//		return -1;
 		for (Recipe recipe:recipes)
 			if (recipe.inputMatch(input)) return recipe;
 		return null;

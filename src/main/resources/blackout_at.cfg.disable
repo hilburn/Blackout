@@ -1,6 +1,0 @@
-# Blackout Access Transformer config file.
-
-# This is the obfuscated field name we got earlier.
-
-public static net.minecraft.init.Blocks chest 	#Blocks.chest
-public static net.minecraft.init.Blocks ice 	#Blocks.ice
