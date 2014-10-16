@@ -16,18 +16,6 @@ public class WorldProviderBlackout extends WorldProvider {
 		WorldChunkManager manager = new WorldChunkManager(worldObj);
 		WorldChunkManager.allowedBiomes.clear();
 		
-		int biomeNum=40;														//Overwrites all vanilla biomes
-		int asteroidBiomes=(int)((float)biomeNum*4.0F/8.0F);
-		for (int i=0;i<30;i++){
-			BiomeGenBase asteroid = new BiomeGenAsteroid(i);
-			WorldChunkManager.allowedBiomes.add(asteroid);
-			BiomeGenBase asteroidM = new BiomeGenAsteroid(i+128);
-		}
-		for (int i=30;i<40;i++){
-			BiomeGenBase asteroidocean = new BiomeGenAsteroidOcean(i);
-			BiomeGenBase asteroidoceanM = new BiomeGenAsteroidOcean(i+128);
-		}
-		
 		this.worldChunkMgr = manager;               
 		this.dimensionId = 0;
 		worldObj.skylightSubtracted=10;

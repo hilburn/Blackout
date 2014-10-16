@@ -75,6 +75,7 @@ dependencies {
 
 processResources
 {
+	exclude '**/*.psd'
     // this will ensure that this task is redone when the versions change.
     inputs.property "version", project.version
     inputs.property "mcversion", project.minecraft.version
@@ -89,7 +90,6 @@ processResources
         
     // copy everything else, thats not the mcmod.info
     from(sourceSets.main.resources.srcDirs) {
-        exclude '**/*.psd'
         exclude '**/*.info'
     }
 }
