@@ -14,7 +14,6 @@ public class WorldProviderBlackout extends WorldProvider {
 	public void registerWorldChunkManager(){
 		WorldChunkManager manager = new WorldChunkManagerBlackout(worldObj);
 		this.worldChunkMgr = manager;             
-
 		this.dimensionId = 0;
 		worldObj.skylightSubtracted=10;
 		setCloudRenderer(new CloudRenderer());

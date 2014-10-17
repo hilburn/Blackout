@@ -11,7 +11,6 @@ import net.minecraft.util.IProgressUpdate;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.ChunkPosition;
 import net.minecraft.world.World;
-import net.minecraft.world.WorldType;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.IChunkProvider;
@@ -24,6 +23,7 @@ import net.minecraftforge.event.terraingen.PopulateChunkEvent;
 import net.minecraftforge.event.terraingen.TerrainGen;
 
 import com.hilburn.blackout.handlers.ConfigHandler;
+import com.hilburn.blackout.utils.Gradient;
 
 import cpw.mods.fml.common.eventhandler.Event.Result;
 
@@ -43,8 +43,6 @@ public class ChunkProviderAlternate implements IChunkProvider
     public NoiseGeneratorOctaves mobSpawnerNoise;
     /** Reference to the World object. */
     private World worldObj;
-    private WorldType field_147435_p;
-    private final double[] field_147434_q;
     private final float[] parabolicField;
     private double[] stoneNoise = new double[256];
     
@@ -60,14 +58,14 @@ public class ChunkProviderAlternate implements IChunkProvider
     double[] field_147426_g;
     int[][] field_73219_j = new int[32][32];
     
-    
-    private static final String __OBFID = "CL_00000396";
-
+    private Gradient noiseGen;
+    private Gradient noiseGen2;
+    private Gradient noiseGen3;
     
     public ChunkProviderAlternate(World p_i2006_1_, long p_i2006_2_, boolean p_i2006_4_)
     {
         this.worldObj = p_i2006_1_;
-        this.field_147435_p = p_i2006_1_.getWorldInfo().getTerrainType();
+        p_i2006_1_.getWorldInfo().getTerrainType();
         this.rand = new Random(p_i2006_2_);
         this.field_147431_j = new NoiseGeneratorOctaves(this.rand, 16);
         this.field_147432_k = new NoiseGeneratorOctaves(this.rand, 16);
@@ -76,7 +74,6 @@ public class ChunkProviderAlternate implements IChunkProvider
         this.noiseGen5 = new NoiseGeneratorOctaves(this.rand, 10);
         this.noiseGen6 = new NoiseGeneratorOctaves(this.rand, 16);
         this.mobSpawnerNoise = new NoiseGeneratorOctaves(this.rand, 8);
-        this.field_147434_q = new double[825];
         this.parabolicField = new float[25];
 
         for (int j = -2; j <= 2; ++j)
@@ -97,6 +94,10 @@ public class ChunkProviderAlternate implements IChunkProvider
         this.noiseGen5 = (NoiseGeneratorOctaves)noiseGens[4];
         this.noiseGen6 = (NoiseGeneratorOctaves)noiseGens[5];
         this.mobSpawnerNoise = (NoiseGeneratorOctaves)noiseGens[6];
+        
+        this.noiseGen = new Gradient(this.rand.nextLong(), 4, 0.25F);
+        this.noiseGen2 = new Gradient(this.rand.nextLong(), 4, 0.25F);
+        this.noiseGen3 = new Gradient(this.rand.nextLong(), 1, 0.25F);
         a = ConfigHandler.asteroidXSize * ConfigHandler.asteroidXSize;
         halfY = ConfigHandler.asteroidYSize/2;
         b = halfY * halfY;
@@ -106,6 +107,9 @@ public class ChunkProviderAlternate implements IChunkProvider
 
     public void generateTerrain(int chunkX, int chunkZ, Block[] idArray)
     {
+    	this.noiseGen.setFrequency(0.0125F);
+        this.noiseGen2.setFrequency(0.015F);
+        this.noiseGen3.setFrequency(0.01F);
         this.biomesForGeneration = this.worldObj.getWorldChunkManager().getBiomesForGeneration(this.biomesForGeneration, chunkX, chunkZ , 16, 16);
         int thisChunkX = chunkX*16;
         int thisChunkZ = chunkZ*16;
@@ -117,11 +121,33 @@ public class ChunkProviderAlternate implements IChunkProvider
 	            {
 	            	if (Math.abs(z+thisChunkZ)<=ConfigHandler.asteroidZSize)
 	            	{
-		                 for (int y = 0; y < ConfigHandler.asteroidYSize; y++)
+	    				final double d = noiseGen.getNoise(x+thisChunkX ,z+thisChunkZ) * 8;
+	    		        final double d2 = noiseGen2.getNoise(x+thisChunkX ,z+thisChunkZ) * 24;
+	    		        double d3 = noiseGen3.getNoise(x+thisChunkX ,z+thisChunkZ) - 0.1;
+	    		        d3 *= 4;
+
+	    		        double yDev = 0;
+
+	    		        if (d3 < 0.0D)
+	    		        {
+	    		            yDev = d;
+	    		        }
+	    		        else if (d3 > 1.0D)
+	    		        {
+	    		            yDev = d2;
+	    		        }
+	    		        else
+	    		        {
+	    		            yDev = d + (d2 - d) * d3;
+	    		        }
+	    		        
+	    		        if (yDev>5) yDev=(yDev-5)*0.5+5;
+		                 for (int y = 0; y < ConfigHandler.asteroidYSize+3; y++)
 		                 {
-		                     if (generate(x+thisChunkX,y-halfY,z+thisChunkZ))
+		               
+		                     if (generate(x+thisChunkX,y-halfY+(int)yDev,z+thisChunkZ))
 		                     {
-		                         idArray[this.getIndex(x, y, z)] = Blocks.stone;
+		                         idArray[this.getIndex(x, y, z)] = yDev<6 || y<halfY ? Blocks.stone: Blocks.bedrock;
 		                     }
 		                 }
 	            	}
@@ -179,7 +205,7 @@ public class ChunkProviderAlternate implements IChunkProvider
         byte[] abyte = new byte[65536];
         this.generateTerrain(p_73154_1_, p_73154_2_, ablock);
         this.biomesForGeneration = this.worldObj.getWorldChunkManager().loadBlockGeneratorData(this.biomesForGeneration, p_73154_1_ * 16, p_73154_2_ * 16, 16, 16);
-        this.replaceBlocksForBiome(p_73154_1_, p_73154_2_, ablock, abyte, this.biomesForGeneration);
+        //this.replaceBlocksForBiome(p_73154_1_, p_73154_2_, ablock, abyte, this.biomesForGeneration);
 
 
 
@@ -194,129 +220,6 @@ public class ChunkProviderAlternate implements IChunkProvider
         chunk.generateSkylightMap();
         return chunk;
     }
-
-    private void func_147423_a(int p_147423_1_, int p_147423_2_, int p_147423_3_)
-    {
-        double d0 = 684.412D;
-        double d1 = 684.412D;
-        double d2 = 512.0D;
-        double d3 = 512.0D;
-        this.field_147426_g = this.noiseGen6.generateNoiseOctaves(this.field_147426_g, p_147423_1_, p_147423_3_, 5, 5, 200.0D, 200.0D, 0.5D);
-        this.field_147427_d = this.field_147429_l.generateNoiseOctaves(this.field_147427_d, p_147423_1_, p_147423_2_, p_147423_3_, 5, 33, 5, 8.555150000000001D, 4.277575000000001D, 8.555150000000001D);
-        this.field_147428_e = this.field_147431_j.generateNoiseOctaves(this.field_147428_e, p_147423_1_, p_147423_2_, p_147423_3_, 5, 33, 5, 684.412D, 684.412D, 684.412D);
-        this.field_147425_f = this.field_147432_k.generateNoiseOctaves(this.field_147425_f, p_147423_1_, p_147423_2_, p_147423_3_, 5, 33, 5, 684.412D, 684.412D, 684.412D);
-        boolean flag1 = false;
-        boolean flag = false;
-        int l = 0;
-        int i1 = 0;
-        double d4 = 8.5D;
-
-        for (int j1 = 0; j1 < 5; ++j1)
-        {
-            for (int k1 = 0; k1 < 5; ++k1)
-            {
-                float f = 0.0F;
-                float f1 = 0.0F;
-                float f2 = 0.0F;
-                byte b0 = 2;
-                BiomeGenBase biomegenbase = this.biomesForGeneration[j1 + 2 + (k1 + 2) * 10];
-
-                for (int l1 = -b0; l1 <= b0; ++l1)
-                {
-                    for (int i2 = -b0; i2 <= b0; ++i2)
-                    {
-                        BiomeGenBase biomegenbase1 = this.biomesForGeneration[j1 + l1 + 2 + (k1 + i2 + 2) * 10];
-                        float f3 = biomegenbase1.rootHeight;
-                        float f4 = biomegenbase1.heightVariation;
-
-                        if (this.field_147435_p == WorldType.AMPLIFIED && f3 > 0.0F)
-                        {
-                            f3 = 1.0F + f3 * 2.0F;
-                            f4 = 1.0F + f4 * 4.0F;
-                        }
-
-                        float f5 = this.parabolicField[l1 + 2 + (i2 + 2) * 5] / (f3 + 2.0F);
-
-                        if (biomegenbase1.rootHeight > biomegenbase.rootHeight)
-                        {
-                            f5 /= 2.0F;
-                        }
-
-                        f += f4 * f5;
-                        f1 += f3 * f5;
-                        f2 += f5;
-                    }
-                }
-
-                f /= f2;
-                f1 /= f2;
-                f = f * 0.9F + 0.1F;
-                f1 = (f1 * 4.0F - 1.0F) / 8.0F;
-                double d12 = this.field_147426_g[i1] / 8000.0D;
-
-                if (d12 < 0.0D)
-                {
-                    d12 = -d12 * 0.3D;
-                }
-
-                d12 = d12 * 3.0D - 2.0D;
-
-                if (d12 < 0.0D)
-                {
-                    d12 /= 2.0D;
-
-                    if (d12 < -1.0D)
-                    {
-                        d12 = -1.0D;
-                    }
-
-                    d12 /= 1.4D;
-                    d12 /= 2.0D;
-                }
-                else
-                {
-                    if (d12 > 1.0D)
-                    {
-                        d12 = 1.0D;
-                    }
-
-                    d12 /= 8.0D;
-                }
-
-                ++i1;
-                double d13 = (double)f1;
-                double d14 = (double)f;
-                d13 += d12 * 0.2D;
-                d13 = d13 * 8.5D / 8.0D;
-                double d5 = 8.5D + d13 * 4.0D;
-
-                for (int j2 = 0; j2 < 33; ++j2)
-                {
-                    double d6 = ((double)j2 - d5) * 12.0D * 128.0D / 256.0D / d14;
-
-                    if (d6 < 0.0D)
-                    {
-                        d6 *= 4.0D;
-                    }
-
-                    double d7 = this.field_147428_e[l] / 512.0D;
-                    double d8 = this.field_147425_f[l] / 512.0D;
-                    double d9 = (this.field_147427_d[l] / 10.0D + 1.0D) / 2.0D;
-                    double d10 = MathHelper.denormalizeClamp(d7, d8, d9) - d6;
-
-                    if (j2 > 29)
-                    {
-                        double d11 = (double)((float)(j2 - 29) / 3.0F);
-                        d10 = d10 * (1.0D - d11) + -10.0D * d11;
-                    }
-
-                    this.field_147434_q[l] = d10;
-                    ++l;
-                }
-            }
-        }
-    }
-
     /**
      * Checks to see if a chunk exists at x, y
      */
@@ -333,7 +236,7 @@ public class ChunkProviderAlternate implements IChunkProvider
         BlockFalling.fallInstantly = true;
         int k = p_73153_2_ * 16;
         int l = p_73153_3_ * 16;
-        BiomeGenBase biomegenbase = this.worldObj.getBiomeGenForCoords(k + 16, l + 16);
+        this.worldObj.getBiomeGenForCoords(k + 16, l + 16);
         this.rand.setSeed(this.worldObj.getSeed());
         long i1 = this.rand.nextLong() / 2L * 2L + 1L;
         long j1 = this.rand.nextLong() / 2L * 2L + 1L;

@@ -5,6 +5,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.event.world.BlockEvent.BreakEvent;
 import net.minecraftforge.event.world.BlockEvent.HarvestDropsEvent;
+import net.minecraftforge.event.world.WorldEvent;
 
 import com.hilburn.blackout.blocks.ModBlocks;
 
@@ -37,5 +38,11 @@ public class BlockHandler {
 			event.drops.clear();//remove(new ItemStack(ModBlocks.smallchesttrap));
 			event.drops.add(new ItemStack(Blocks.trapped_chest));
 		}
+	}
+	
+	@SubscribeEvent
+	public void worldLoad(WorldEvent.Load event)
+	{
+		if (event.world.provider.dimensionId==0)event.world.setSpawnLocation(0, 150, 0);
 	}
 }
