@@ -15,6 +15,7 @@ import net.minecraft.world.gen.layer.GenLayer;
 import net.minecraft.world.gen.layer.IntCache;
 
 import com.hilburn.blackout.Blackout;
+import com.hilburn.blackout.utils.Gradient;
 import com.hilburn.blackout.world.gen.layer.GenLayerBlackout;
 
 import cpw.mods.fml.relauncher.Side;
@@ -31,7 +32,7 @@ public class WorldChunkManagerBlackout extends WorldChunkManager
 	{
 		this.myBiomeCache = new BiomeCache(this);
 		this.myBiomesToSpawnIn = new ArrayList<BiomeGenBase>();
-		this.myBiomesToSpawnIn.add(Blackout.asteroidOcean);
+		this.myBiomesToSpawnIn.add(Blackout.asteroid);
 		allowedBiomes = new ArrayList<BiomeGenBase>(Arrays.asList(Blackout.asteroid));
 	}
 
@@ -40,7 +41,7 @@ public class WorldChunkManagerBlackout extends WorldChunkManager
 		this();
 		GenLayer[] agenlayer = GenLayerBlackout.makeTheWorld(seed);
 		this.myGenBiomes = agenlayer[0];
-		this.myBiomeIndexLayer = agenlayer[0];
+		this.myBiomeIndexLayer = agenlayer[1];
 	}
 
 	public WorldChunkManagerBlackout(World world)
@@ -165,12 +166,7 @@ public class WorldChunkManagerBlackout extends WorldChunkManager
 			int[] aint = this.myBiomeIndexLayer.getInts(x, y, width, length);
 
 			for (int i = 0; i < width * length; ++i) {
-				switch (aint[i]){
-				case 1:
-					par1ArrayOfBiomeGenBase[i] = Blackout.asteroidOcean;
-				default:
-					par1ArrayOfBiomeGenBase[i] = Blackout.asteroid;
-				}
+				par1ArrayOfBiomeGenBase[i] = aint[i]==1 ? Blackout.asteroidOcean:Blackout.asteroid;
 			}
 
 			return par1ArrayOfBiomeGenBase;

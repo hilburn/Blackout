@@ -110,7 +110,6 @@ public class ChunkProviderAlternate implements IChunkProvider
     	this.noiseGen.setFrequency(0.0125F);
         this.noiseGen2.setFrequency(0.015F);
         this.noiseGen3.setFrequency(0.01F);
-        this.biomesForGeneration = this.worldObj.getWorldChunkManager().getBiomesForGeneration(this.biomesForGeneration, chunkX, chunkZ , 16, 16);
         int thisChunkX = chunkX*16;
         int thisChunkZ = chunkZ*16;
         for (int x = 0; x < 16; x++)
