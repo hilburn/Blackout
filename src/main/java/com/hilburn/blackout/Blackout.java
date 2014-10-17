@@ -5,6 +5,9 @@ import java.io.File;
 import net.minecraft.command.ICommandManager;
 import net.minecraft.command.ServerCommandManager;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.world.WorldType;
+import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraftforge.common.BiomeManager;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.MinecraftForge;
 
@@ -16,6 +19,8 @@ import com.hilburn.blackout.handlers.ConfigHandler;
 import com.hilburn.blackout.handlers.PlayerHandler;
 import com.hilburn.blackout.items.ModItems;
 import com.hilburn.blackout.proxies.CommonProxy;
+import com.hilburn.blackout.world.BiomeGenAsteroid;
+import com.hilburn.blackout.world.BiomeGenAsteroidOcean;
 import com.hilburn.blackout.world.WorldProviderBlackout;
 
 import cpw.mods.fml.common.Mod;
@@ -34,6 +39,9 @@ public class Blackout {
 	PlayerHandler playerEvent = new PlayerHandler();
 	public File config;
 	
+	public static BiomeGenBase asteroid = new BiomeGenAsteroid(0);
+	public static BiomeGenBase asteroidOcean = new BiomeGenAsteroidOcean(1);//.setBiomeName("Kuiper Belt Icebound Ocean");
+	
 	@Instance(ModInfo.MODID)
 	public static Blackout instance;
 	
@@ -50,9 +58,6 @@ public class Blackout {
 		MinecraftForge.EVENT_BUS.register(playerEvent);
 		
 		config=event.getSuggestedConfigurationFile();
-		
-		DimensionManager.unregisterProviderType(0);
-        DimensionManager.registerProviderType(0, WorldProviderBlackout.class, true);
 	}
 	
 	@EventHandler
@@ -65,6 +70,17 @@ public class Blackout {
 	@EventHandler
 	public void postInit(FMLPostInitializationEvent event){
 		ConfigHandler.init(config);
+//		clearBiomes();
+//		
+//		BiomeManager.warmBiomes.add(new BiomeEntry(asteroid,80));
+//		BiomeManager.warmBiomes.add(new BiomeEntry(asteroidOcean,20));
+//		BiomeManager.coolBiomes = BiomeManager.desertBiomes = BiomeManager.icyBiomes = BiomeManager.warmBiomes;
+//		BiomeManager.oceanBiomes.add(asteroidOcean);
+//		WorldChunkManager.allowedBiomes.clear();
+//		WorldChunkManager.allowedBiomes.add(asteroid);
+		
+		DimensionManager.unregisterProviderType(0);
+        DimensionManager.registerProviderType(0, WorldProviderBlackout.class, true);
 	}
 	
 	@EventHandler
@@ -73,6 +89,17 @@ public class Blackout {
 		ICommandManager command = server.getCommandManager();
 		ServerCommandManager serverCommand = ((ServerCommandManager) command);
 		serverCommand.registerCommand(new CommandHandler());
+	}
+	
+	private void clearBiomes()
+	{
+		BiomeManager.coolBiomes.clear();
+		BiomeManager.desertBiomes.clear();
+		BiomeManager.icyBiomes.clear();
+		BiomeManager.oceanBiomes.clear();
+		BiomeManager.strongHoldBiomes.clear();
+		BiomeManager.strongHoldBiomesBlackList.clear();
+		BiomeManager.warmBiomes.clear();
 	}
 	
 }

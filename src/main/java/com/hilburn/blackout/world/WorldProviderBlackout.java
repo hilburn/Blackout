@@ -11,12 +11,10 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class WorldProviderBlackout extends WorldProvider {
 
-	@SuppressWarnings("unused")
 	public void registerWorldChunkManager(){
-		WorldChunkManager manager = new WorldChunkManager(worldObj);
-		WorldChunkManager.allowedBiomes.clear();
-		
-		this.worldChunkMgr = manager;               
+		WorldChunkManager manager = new WorldChunkManagerBlackout(worldObj);
+		this.worldChunkMgr = manager;             
+
 		this.dimensionId = 0;
 		worldObj.skylightSubtracted=10;
 		setCloudRenderer(new CloudRenderer());
@@ -24,7 +22,7 @@ public class WorldProviderBlackout extends WorldProvider {
 	}
 	
 	public IChunkProvider createChunkGenerator()        {               
-		return new ChunkProviderBlackout(worldObj, worldObj.getSeed(), false);        
+		return new ChunkProviderAlternate(worldObj, worldObj.getSeed(), false);        
 	}
 	
 	/**

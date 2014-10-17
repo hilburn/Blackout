@@ -1,5 +1,6 @@
 package com.hilburn.blackout.world;
 
+import net.minecraft.init.Blocks;
 import net.minecraft.world.biome.BiomeGenBase;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -19,6 +20,8 @@ public class BiomeGenAsteroid extends BiomeGenBase{
         this.enableSnow=false;
         this.heightVariation=0;
         this.rootHeight=-2;
+        this.fillerBlock=Blocks.stone;
+        this.topBlock=Blocks.stone;
         this.setBiomeName("Kuiper Belt");
     }
     
@@ -28,6 +31,7 @@ public class BiomeGenAsteroid extends BiomeGenBase{
     {
         return 0;
     }
+    
     
     
 

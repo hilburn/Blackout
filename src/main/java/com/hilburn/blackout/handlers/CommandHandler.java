@@ -1,7 +1,5 @@
 package com.hilburn.blackout.handlers;
 
-
-
 import java.util.List;
 
 import net.minecraft.command.CommandBase;

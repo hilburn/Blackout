@@ -12,6 +12,10 @@ import net.minecraftforge.common.config.Property;
 
 public class ConfigHandler {
 	public static ArrayList<String> recipes;
+	
+	public static int asteroidXSize = 500;
+	public static int asteroidZSize = 1000;
+	public static int asteroidYSize = 150;
 
 	public static void init(File file)
 	{
