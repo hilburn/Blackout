@@ -21,7 +21,7 @@ public class WorldProviderBlackout extends WorldProvider {
 	}
 	
 	public IChunkProvider createChunkGenerator()        {               
-		return new ChunkProviderAlternate(worldObj, worldObj.getSeed(), false);        
+		return new ChunkProviderBlackout(worldObj, worldObj.getSeed(), false);        
 	}
 	
 	/**

@@ -40,7 +40,7 @@ public class Blackout {
 	public File config;
 	
 	public static BiomeGenBase asteroid = new BiomeGenAsteroid(0);
-	public static BiomeGenBase asteroidOcean = new BiomeGenAsteroidOcean(1);//.setBiomeName("Kuiper Belt Icebound Ocean");
+	public static BiomeGenBase asteroidOcean = new BiomeGenAsteroid(1).setBiomeName("Kuiper Belt Icebound Ocean");
 	
 	@Instance(ModInfo.MODID)
 	public static Blackout instance;
@@ -70,14 +70,6 @@ public class Blackout {
 	@EventHandler
 	public void postInit(FMLPostInitializationEvent event){
 		ConfigHandler.init(config);
-//		clearBiomes();
-//		
-//		BiomeManager.warmBiomes.add(new BiomeEntry(asteroid,80));
-//		BiomeManager.warmBiomes.add(new BiomeEntry(asteroidOcean,20));
-//		BiomeManager.coolBiomes = BiomeManager.desertBiomes = BiomeManager.icyBiomes = BiomeManager.warmBiomes;
-//		BiomeManager.oceanBiomes.add(asteroidOcean);
-//		WorldChunkManager.allowedBiomes.clear();
-//		WorldChunkManager.allowedBiomes.add(asteroid);
 		
 		DimensionManager.unregisterProviderType(0);
         DimensionManager.registerProviderType(0, WorldProviderBlackout.class, true);
@@ -90,17 +82,5 @@ public class Blackout {
 		ServerCommandManager serverCommand = ((ServerCommandManager) command);
 		serverCommand.registerCommand(new CommandHandler());
 	}
-	
-	private void clearBiomes()
-	{
-		BiomeManager.coolBiomes.clear();
-		BiomeManager.desertBiomes.clear();
-		BiomeManager.icyBiomes.clear();
-		BiomeManager.oceanBiomes.clear();
-		BiomeManager.strongHoldBiomes.clear();
-		BiomeManager.strongHoldBiomesBlackList.clear();
-		BiomeManager.warmBiomes.clear();
-	}
-	
 }
 
