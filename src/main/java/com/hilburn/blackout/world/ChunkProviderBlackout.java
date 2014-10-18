@@ -76,7 +76,7 @@ public class ChunkProviderBlackout implements IChunkProvider
         this.noiseGen3.setFrequency(0.01F);
         this.noiseGen4.setFrequency(0.05F);
         this.noiseGen5.setFrequency(0.05F);
-        this.noiseGen6.setFrequency(0.008F);
+        this.noiseGen6.setFrequency(0.012F);
         a = ConfigHandler.asteroidXSize * ConfigHandler.asteroidXSize;
         halfY = ConfigHandler.asteroidYSize/2;
         b = halfY * halfY;
@@ -101,7 +101,7 @@ public class ChunkProviderBlackout implements IChunkProvider
 	            		{
 	            			double dy = getdY(x+thisChunkX,z+thisChunkZ);
 		    				double dy2 = getdY(x+thisChunkX+2*ConfigHandler.asteroidXSize,z+thisChunkZ);
-		    				int iceY = (int)(this.noiseGen6.getNoise(x+thisChunkX,z+thisChunkZ)/0.15F);
+		    				int iceY = (int)(this.noiseGen6.getNoise(x+thisChunkX,z+thisChunkZ)/0.12F);
 		    				int maxY = (int)(ellipseY+dy)+halfY;
 		    				int minY = Math.max((int)(halfY-ellipseY+dy2),0);
 		    				for (int y = minY; y <= maxY; y++)
@@ -114,7 +114,8 @@ public class ChunkProviderBlackout implements IChunkProvider
 		    					for (int i=0;i<iceY;i++)
 		    					{
 		    						int yVal = Math.max(maxY-i,minY);
-		    						idArray[this.getIndex(x, yVal, z)]=i<3?Blocks.ice:Blocks.packed_ice;
+		    						idArray[this.getIndex(x, yVal, z)]=i<2?Blocks.ice:Blocks.packed_ice;
+//		    						if (i>2) System.out.println("Packed Ice at "+(x+thisChunkX)+":"+(z+thisChunkZ));
 		    					}
 		    				}
 		    				
