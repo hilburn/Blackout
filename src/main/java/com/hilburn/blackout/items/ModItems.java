@@ -15,7 +15,7 @@ public class ModItems {
 	public static void init(){
 		GameRegistry.registerItem(distortion_core = new ItemDistortionCore(),ItemInfo.DISTORTIONCORE_UNLOCALIZEDNAME);
 		GameRegistry.registerItem(ingot_magnesium = new ItemMagnesiumIngot(),ItemInfo.MAGNESIUM_UNLOCALIZEDNAME);
-		OreDictionary.registerOre("oreMagnesium", new ItemStack(ingot_magnesium));
+		OreDictionary.registerOre("ingotMagnesium", new ItemStack(ingot_magnesium));
 	}
 	
 	public static void registerRecipes()

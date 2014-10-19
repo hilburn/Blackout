@@ -13,9 +13,9 @@ import net.minecraftforge.common.config.Property;
 public class ConfigHandler {
 	public static ArrayList<String> recipes;
 	
-	public static int asteroidXSize = 500;
-	public static int asteroidZSize = 1000;
-	public static int asteroidYSize = 150;
+	public static int asteroidXSize;
+	public static int asteroidZSize;
+	public static int asteroidYSize;
 
 	public static void init(File file)
 	{
@@ -31,6 +31,13 @@ public class ConfigHandler {
 		{
 			Recipe.addRecipe(inputString);
 		}
+		
+		Property xSize = config.get("Asteroid", "X Size", 500);
+		asteroidXSize=xSize.getInt();
+		Property ySize = config.get("Asteroid", "Y Size", 150);
+		asteroidYSize=ySize.getInt();
+		Property zSize = config.get("Asteroid", "Z Size", 1000);
+		asteroidZSize=zSize.getInt();
 		config.save();
 	}
 }

@@ -32,7 +32,7 @@ import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
 
-@Mod(modid = ModInfo.MODID, name = ModInfo.NAME, version = ModInfo.VERSION_FULL, dependencies="after:RotaryCraft;after:ReactorCraft;after:ExpandedRedstone")
+@Mod(modid = ModInfo.MODID, name = ModInfo.NAME, version = ModInfo.VERSION_FULL, dependencies="before:RotaryCraft;before:ReactorCraft;before:ExpandedRedstone;before:minechem")
 public class Blackout {
 	
 	BlockHandler blockEvent = new BlockHandler();
