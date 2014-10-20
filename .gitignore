@@ -11,8 +11,10 @@
 /config/
 /crash-reports/
 /logs/
-/lib/
 /mods/
+/resourcepacks/
+/dumps/
+/scripts/
 /saves/
 /.classpath
 /.project
@@ -21,6 +23,6 @@
 /*.txt
 /server.properties
 /world
-/*.zip
+*.zip
 *.psd
-*.414
+*.log

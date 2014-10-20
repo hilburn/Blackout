@@ -2,12 +2,11 @@ package com.hilburn.blackout;
 
 import java.io.File;
 
+import minetweaker.MineTweakerAPI;
 import net.minecraft.command.ICommandManager;
 import net.minecraft.command.ServerCommandManager;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.world.WorldType;
 import net.minecraft.world.biome.BiomeGenBase;
-import net.minecraftforge.common.BiomeManager;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.MinecraftForge;
 
@@ -18,11 +17,12 @@ import com.hilburn.blackout.handlers.CommandHandler;
 import com.hilburn.blackout.handlers.ConfigHandler;
 import com.hilburn.blackout.handlers.PlayerHandler;
 import com.hilburn.blackout.items.ModItems;
+import com.hilburn.blackout.minetweaker.StellarFabricator;
 import com.hilburn.blackout.proxies.CommonProxy;
 import com.hilburn.blackout.world.BiomeGenAsteroid;
-import com.hilburn.blackout.world.BiomeGenAsteroidOcean;
 import com.hilburn.blackout.world.WorldProviderBlackout;
 
+import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
@@ -65,6 +65,9 @@ public class Blackout {
 		 new GuiHandler();
 		 ModItems.registerRecipes();
 		 ModBlocks.registerRecipes();
+		 
+		 if (Loader.isModLoaded("MineTweaker3"))
+				 MineTweakerAPI.registerClass(StellarFabricator.class);
 	}
 	
 	@EventHandler

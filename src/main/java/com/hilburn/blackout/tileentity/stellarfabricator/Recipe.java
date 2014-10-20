@@ -26,14 +26,15 @@ public class Recipe {
 	
 	public Recipe(ItemStack[] input, ItemStack output, long power, int omega, int torque, int time)
 	{
-		this.setInput(input);
+		ItemStack[] temp = new ItemStack[9];
+		for (int i=0;i<Math.min(input.length, 9);i++)
+			temp[i]=input[i];
+		this.setInput(temp);
 		this.setOutput(output);
 		this.setPower(power);
 		this.setOmega(omega);
 		this.setTorque(torque);
 		this.setTime(time);
-		
-		recipes.add(this);
 	}
 	
 	public Recipe(String configString)
@@ -88,6 +89,34 @@ public class Recipe {
 		recipes.add(new Recipe(input));
 	}
 	
+	public static void add(Recipe recipe)
+	{
+		recipes.add(recipe);
+	}
+	
+	public static void remove(ItemStack output)
+	{
+		for (Recipe stored:recipes)
+		{
+			if (stored.getOutput().isItemEqual(output)&&ItemStack.areItemStackTagsEqual(output, stored.getOutput()))
+			{
+				recipes.remove(stored);
+				break;
+			}
+		}
+	}
+	
+	public static Recipe contains(ItemStack output)
+	{
+		for (Recipe stored:recipes)
+		{
+			if (stored.getOutput().isItemEqual(output)&&ItemStack.areItemStackTagsEqual(output, stored.getOutput()))
+			{
+				return stored;
+			}
+		}
+		return null;
+	}
 	
 	private static ItemStack getStackFromString(String string)
 	{
@@ -161,7 +190,7 @@ public class Recipe {
 			if (this.input[i]==null&&input[i]==null) continue;
 			if (this.input[i]==null||input[i]==null) return false;
 			if (input[i].toString().contains("null")) return false;
-			if (this.input[i].getItem()!=input[i].getItem()||this.input[i].getItemDamage()!=input[i].getItemDamage()||this.input[i].stackTagCompound!=input[i].stackTagCompound) return false;
+			if (!this.input[i].isItemEqual(input[i])||!ItemStack.areItemStackTagsEqual(input[i], this.input[i])) return false;
 			if (this.input[i].stackSize>input[i].stackSize) return false;
 		}
 		return true;
@@ -247,7 +276,7 @@ public class Recipe {
 		{
 			for (ItemStack input:recipe.getInput())
 			{
-				if (input!=null&&input.isItemEqual(stack))
+				if (input!=null&&input.isItemEqual(stack)&&ItemStack.areItemStackTagsEqual(input, stack))
 				{
 					result.add(recipe);
 					break;
@@ -262,7 +291,8 @@ public class Recipe {
 		ArrayList<Recipe> result = new ArrayList<Recipe>();
 		for (Recipe recipe:recipes)
 		{
-			if (recipe.getOutput().isItemEqual(stack))
+			ItemStack output=recipe.getOutput();
+			if (output.isItemEqual(stack)&&ItemStack.areItemStackTagsEqual(output, stack))
 			{
 				result.add(recipe);
 				break;
