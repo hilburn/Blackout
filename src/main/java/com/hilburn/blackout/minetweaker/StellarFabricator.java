@@ -2,8 +2,10 @@ package com.hilburn.blackout.minetweaker;
 
 import minetweaker.IUndoableAction;
 import minetweaker.MineTweakerAPI;
+import minetweaker.api.item.IIngredient;
 import minetweaker.api.item.IItemStack;
 import net.minecraft.item.ItemStack;
+import stanhebben.zenscript.annotations.Optional;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
 
@@ -14,11 +16,19 @@ import com.hilburn.blackout.utils.InputHelper;
 @ZenClass("mods.blackout.Fabricator")
 public class StellarFabricator {
 	@ZenMethod
-	public static void addRecipe(IItemStack outputStack, int omega, int torque, long power, int time, IItemStack... inputs) 
+	public static void addRecipe(IItemStack outputStack, IIngredient[] inputs,  int omega, int torque, long power, @Optional int time) 
 	{
-		MineTweakerAPI.apply(new AddRecipeAction(InputHelper.toStack(outputStack),InputHelper.toStacks(inputs),omega,torque,(long)power, time));
+		if (time<=0) time = 300;
+		omega = Math.max(omega, 1);
+		torque = Math.max(torque, 1);
+		power = Math.max(power, 1);
+		ItemStack[] input = new ItemStack[9];
+		for (int i=0;i<Math.min(inputs.length, 9);i++)
+		{
+			input[i]=InputHelper.getInput(inputs[i]);
+		}
+		MineTweakerAPI.apply(new AddRecipeAction(InputHelper.toStack(outputStack),input,omega,torque,(long)power, time));
 	}
-	
 	
 	@ZenMethod
 	public static void removeRecipe(IItemStack output) {

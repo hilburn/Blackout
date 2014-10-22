@@ -9,9 +9,11 @@ import codechicken.lib.gui.GuiDraw;
 import codechicken.nei.PositionedStack;
 import codechicken.nei.recipe.TemplateRecipeHandler;
 
+import com.hilburn.blackout.blocks.ModBlocks;
 import com.hilburn.blackout.client.interfaces.GuiStellarFabricator;
 import com.hilburn.blackout.tileentity.stellarfabricator.Recipe;
 import com.hilburn.blackout.tileentity.stellarfabricator.TileEntityStellarFabricator;
+import com.hilburn.blackout.utils.StringHelper;
 
 
 public class StellarFabricatorNEIRecipeHandler extends TemplateRecipeHandler
@@ -30,7 +32,7 @@ public class StellarFabricatorNEIRecipeHandler extends TemplateRecipeHandler
     private static final int SCALE = 18;
     private static final int TEXT_SCALE = 9;
     
-    private static final String[] OUTPUTSTRING= {"Speed: %drad/s","Torque: %dN/m","Power: %dW"};
+    private static final String[] OUTPUTSTRING= {"Speed: %srad/s","Torque: %sNm","Power: %sW"};
 
     @Override
     public String getRecipeName()
@@ -45,6 +47,12 @@ public class StellarFabricatorNEIRecipeHandler extends TemplateRecipeHandler
     }
 
     @Override
+	public int recipiesPerPage()
+	{
+		return 1;
+	}
+    
+    @Override
     public void loadTransferRects()
     {
         //transferRects.add(new TemplateRecipeHandler.RecipeTransferRect(new Rectangle(INPUT_X_OFS, INPUT_ARROW_Y_OFS, 16, 24), STELLARFABRICATOR_RECIPES_ID, new Object[0]));
@@ -53,9 +61,9 @@ public class StellarFabricatorNEIRecipeHandler extends TemplateRecipeHandler
     @Override
     public void loadCraftingRecipes(String outputId, Object... results)
     {
+    	System.out.println(outputId);
         if (outputId.equals(STELLARFABRICATOR_RECIPES_ID))
         {
-            // Add all decomposer recipes to local arecipes array.
             for (Recipe recipe : Recipe.getRecipes())
             {
                 registerRecipe(recipe);
@@ -80,6 +88,13 @@ public class StellarFabricatorNEIRecipeHandler extends TemplateRecipeHandler
     @Override
     public void loadUsageRecipes(ItemStack ingredient)
     {
+    	if (ingredient.isItemEqual(new ItemStack(ModBlocks.stellarconstructor)))
+    	{
+            for (Recipe recipe : Recipe.getRecipes())
+            {
+                registerRecipe(recipe);
+            }
+    	}
     	for (Recipe recipe:Recipe.getRecipeFromInput(ingredient))
     	{
     		registerRecipe(recipe);
@@ -93,7 +108,7 @@ public class StellarFabricatorNEIRecipeHandler extends TemplateRecipeHandler
         return GuiStellarFabricator.class;
     }
 
-    /** Registers a decomposer recipe with NEI. Anything that adds a new decomposer recipe after startup should call this to have the recipe reflected in NEI.
+    /** Registers a recipe with NEI. Anything that adds a new recipe after startup should call this to have the recipe reflected in NEI.
      * 
      * @param recipe Decomposer recipe to add. */
     public void registerRecipe(Recipe recipe)
@@ -111,7 +126,7 @@ public class StellarFabricatorNEIRecipeHandler extends TemplateRecipeHandler
     public void drawExtras(int recipeIdx)
     {
         BaseCachedRecipe cachedRecipe = (BaseCachedRecipe) arecipes.get(recipeIdx);
-        // Render the chance next to the down arrow in the GUI, as a percent.
+        
         float time = cachedRecipe.getTime()/20;
         String timeStr = String.format("%2.1fs", time);
         int xPos = INPUT_X_OFS + 72 - GuiDraw.getStringWidth(timeStr)/2;
@@ -124,11 +139,13 @@ public class StellarFabricatorNEIRecipeHandler extends TemplateRecipeHandler
         {
         	if (requireOut[i]>1)
         	{
-        		String outputString = String.format(OUTPUTSTRING[i], requireOut[i]);
+        		String outputString = String.format(OUTPUTSTRING[i], StringHelper.addCommas(requireOut[i]));
         		GuiDraw.drawString(outputString, INPUT_X_OFS, INPUT_Y_OFS+58+TEXT_SCALE*printLevel++, 8, false);
         	}
         }
     }
+    
+    
 
     private BaseCachedRecipe buildCachedRecipe(Recipe dr)
     {
