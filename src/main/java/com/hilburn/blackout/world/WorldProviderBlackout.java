@@ -1,9 +1,9 @@
 package com.hilburn.blackout.world;
 
+import cpw.mods.fml.common.FMLCommonHandler;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.WorldProvider;
-import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.biome.WorldChunkManager;
 import net.minecraft.world.chunk.IChunkProvider;
 import cpw.mods.fml.relauncher.Side;
@@ -16,8 +16,11 @@ public class WorldProviderBlackout extends WorldProvider {
 		this.worldChunkMgr = manager;             
 		this.dimensionId = 0;
 		worldObj.skylightSubtracted=10;
-		setCloudRenderer(new CloudRenderer());
-		setSkyRenderer(new SkyRenderer());
+        if (FMLCommonHandler.instance().getSide() == Side.CLIENT)
+        {
+            setCloudRenderer(new CloudRenderer());
+            setSkyRenderer(new SkyRenderer());
+        }
 	}
 	
 	public IChunkProvider createChunkGenerator()        {               
