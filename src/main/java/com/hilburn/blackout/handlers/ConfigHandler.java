@@ -17,6 +17,8 @@ public class ConfigHandler {
 	public static int asteroidXSize;
 	public static int asteroidZSize;
 	public static int asteroidYSize;
+	
+	public static boolean disableOrbs = true;
 
 	public static void init(File file)
 	{
@@ -35,6 +37,10 @@ public class ConfigHandler {
 				Recipe.addRecipe(inputString);
 			}
 		}
+		
+		Property xp = config.get("General", "disableXPOrbs", disableOrbs);
+		xp.comment = "Set to true to disable all XP drops";
+		disableOrbs = xp.getBoolean();
 		
 		Property xSize = config.get("Asteroid", "X Size", 500);
 		asteroidXSize=xSize.getInt();

@@ -20,6 +20,8 @@ public class ModBlocks {
 	public static void init(){
 		GameRegistry.registerBlock(smallchest = (Block)new BlockSmallChest(0),BlockInfo.SMALLCHEST_UNLOCALIZEDNAME);
 		GameRegistry.registerBlock(smallchesttrap = (Block)new BlockSmallChest(1),BlockInfo.SMALLCHESTTRAP_UNLOCALIZEDNAME);
+	
+		
 		GameRegistry.registerBlock(stellarconstructor = new BlockStellarFabricator(),BlockInfo.STELLARFABRICATOR_UNLOCALIZEDNAME);
 		GameRegistry.registerBlock(block_magnesium = new BlockMagnesium() , BlockInfo.MAGNESIUM_UNLOCALIZEDNAME);
 		

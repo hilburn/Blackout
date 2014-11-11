@@ -16,6 +16,7 @@ import com.hilburn.blackout.handlers.BlockHandler;
 import com.hilburn.blackout.handlers.CommandHandler;
 import com.hilburn.blackout.handlers.ConfigHandler;
 import com.hilburn.blackout.handlers.PlayerHandler;
+import com.hilburn.blackout.handlers.XPHandler;
 import com.hilburn.blackout.items.ModItems;
 import com.hilburn.blackout.minetweaker.StellarFabricator;
 import com.hilburn.blackout.proxies.CommonProxy;
@@ -37,6 +38,7 @@ public class Blackout {
 	
 	BlockHandler blockEvent = new BlockHandler();
 	PlayerHandler playerEvent = new PlayerHandler();
+	XPHandler xpHandler = new XPHandler();
 	public File config;
 	
 	public static BiomeGenBase asteroid = new BiomeGenAsteroid(0);
@@ -73,6 +75,8 @@ public class Blackout {
 	@EventHandler
 	public void postInit(FMLPostInitializationEvent event){
 		ConfigHandler.init(config);
+		
+		if (ConfigHandler.disableOrbs) MinecraftForge.EVENT_BUS.register(xpHandler);
 		
 		DimensionManager.unregisterProviderType(0);
         DimensionManager.registerProviderType(0, WorldProviderBlackout.class, true);

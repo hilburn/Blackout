@@ -13,8 +13,8 @@ import com.hilburn.blackout.tileentity.TileEntitySmallChest;
 
 public class BlockSmallChest extends BlockChest{
 		
-	public BlockSmallChest(int type){
-		super(type);
+	public BlockSmallChest(int dmg){
+		super(dmg);
 		this.setBlockName(BlockInfo.SMALLCHEST_UNLOCALIZEDNAME);
 		setHardness(2.5F);
 		setStepSound(soundTypeWood);

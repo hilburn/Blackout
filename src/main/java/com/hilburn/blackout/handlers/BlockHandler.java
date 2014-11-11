@@ -34,7 +34,7 @@ public class BlockHandler {
 		if (event.block==ModBlocks.smallchest){
 			event.drops.clear();//.remove(new ItemStack(ModBlocks.smallchest));
 			event.drops.add(new ItemStack(Blocks.chest));
-		}else if(event.block==ModBlocks.smallchest){
+		}else if(event.block==ModBlocks.smallchesttrap){
 			event.drops.clear();//remove(new ItemStack(ModBlocks.smallchesttrap));
 			event.drops.add(new ItemStack(Blocks.trapped_chest));
 		}
