@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockIce;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -12,9 +13,9 @@ import net.minecraft.stats.StatList;
 import net.minecraft.world.World;
 import net.minecraftforge.event.ForgeEventFactory;
 
-public class BlockIceUnmelting extends Block {
+public class BlockIceUnmelting extends BlockIce {
 	public BlockIceUnmelting(){
-		super(Material.ice);
+		super();
 		this.setBlockName(BlockInfo.ICEUNMELTING_UNLOCALIZEDNAME);
 		this.setHardness(0.5F);
 		this.setLightOpacity(3);

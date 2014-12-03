@@ -2,6 +2,7 @@ package com.hilburn.blackout;
 
 import java.io.File;
 
+import com.hilburn.blackout.handlers.ConfigHandler;
 import minetweaker.MineTweakerAPI;
 import net.minecraft.command.ICommandManager;
 import net.minecraft.command.ServerCommandManager;
@@ -12,10 +13,8 @@ import net.minecraftforge.common.MinecraftForge;
 
 import com.hilburn.blackout.blocks.ModBlocks;
 import com.hilburn.blackout.client.interfaces.GuiHandler;
-import com.hilburn.blackout.handlers.BlockHandler;
+import com.hilburn.blackout.handlers.WorldHandler;
 import com.hilburn.blackout.handlers.CommandHandler;
-import com.hilburn.blackout.handlers.ConfigHandler;
-import com.hilburn.blackout.handlers.PlayerHandler;
 import com.hilburn.blackout.handlers.XPHandler;
 import com.hilburn.blackout.items.ModItems;
 import com.hilburn.blackout.minetweaker.StellarFabricator;
@@ -36,8 +35,7 @@ import cpw.mods.fml.common.event.FMLServerStartingEvent;
 @Mod(modid = ModInfo.MODID, name = ModInfo.NAME, version = ModInfo.VERSION_FULL, dependencies="before:RotaryCraft;before:ReactorCraft;before:ExpandedRedstone;before:minechem")
 public class Blackout {
 	
-	BlockHandler blockEvent = new BlockHandler();
-	PlayerHandler playerEvent = new PlayerHandler();
+	WorldHandler worldEvent = new WorldHandler();
 	XPHandler xpHandler = new XPHandler();
 	public File config;
 	
@@ -56,8 +54,7 @@ public class Blackout {
 		ModItems.init();
 		ModBlocks.init();
 		
-		MinecraftForge.EVENT_BUS.register(blockEvent);
-		MinecraftForge.EVENT_BUS.register(playerEvent);
+		MinecraftForge.EVENT_BUS.register(worldEvent);
 		
 		config=event.getSuggestedConfigurationFile();
 	}
@@ -69,7 +66,7 @@ public class Blackout {
 		 ModBlocks.registerRecipes();
 		 
 		 if (Loader.isModLoaded("MineTweaker3"))
-				 MineTweakerAPI.registerClass(StellarFabricator.class);
+			 MineTweakerAPI.registerClass(StellarFabricator.class);
 	}
 	
 	@EventHandler
