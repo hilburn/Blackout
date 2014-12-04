@@ -3,10 +3,13 @@ package com.hilburn.blackout;
 import java.io.File;
 
 import com.hilburn.blackout.handlers.ConfigHandler;
+import com.hilburn.blackout.helpers.ReflectionHandler;
+import com.hilburn.blackout.items.RecipeFixer;
 import minetweaker.MineTweakerAPI;
 import net.minecraft.command.ICommandManager;
 import net.minecraft.command.ServerCommandManager;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.WeightedRandom;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.MinecraftForge;
@@ -50,10 +53,11 @@ public class Blackout {
 	
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event){
-		
+		ReflectionHandler.doesFieldExist(WeightedRandom.Item.class, "field_76292_a");
+		RecipeFixer.init();
 		ModItems.init();
 		ModBlocks.init();
-		
+		RecipeFixer.fixRecipes();
 		MinecraftForge.EVENT_BUS.register(worldEvent);
 		
 		config=event.getSuggestedConfigurationFile();
